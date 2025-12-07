@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("ThreadPoolExecutor 7 参数验证")
-public class ExecutorFactoryTest {
+public class ThreadPoolExecutorTest {
 
     static class ExecutorFactory {
 

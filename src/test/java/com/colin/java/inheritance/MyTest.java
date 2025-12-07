@@ -1,6 +1,6 @@
 package com.colin.java.inheritance;
 
-public class Test {
+public class MyTest {
 	public static void main(String[] args) {
 		new Circle9();
 	}
