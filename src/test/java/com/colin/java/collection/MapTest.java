@@ -1,22 +1,20 @@
 package com.colin.java.collection;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Slf4j
 public class MapTest {
-    private static final Logger LOG = LoggerFactory.getLogger(MapTest.class);
-    
     private static final String[] KEYS = {"name", "age", "sex", "address", "phone", "email"};
 
     @Test
     public void testConcurrentHashMap() {
-        LOG.info("Testing ConcurrentHashMap===============================");
+        log.info("Testing ConcurrentHashMap===============================");
         ConcurrentHashMap<String, String> cmap = new ConcurrentHashMap<>();
         
         // 测试添加元素
@@ -33,12 +31,12 @@ public class MapTest {
             assertEquals(key, cmap.get(key), "Value for key '" + key + "' should be '" + key + "'");
         }
         
-        LOG.info("ConcurrentHashMap content: {}", cmap);
+        log.info("ConcurrentHashMap content: {}", cmap);
     }
 
     @Test
     public void testHashMap() {
-        LOG.info("Testing HashMap===============================");
+        log.info("Testing HashMap===============================");
         HashMap<String, String> map = new HashMap<>();
         
         // 测试添加元素
@@ -55,12 +53,12 @@ public class MapTest {
             assertEquals(key, map.get(key), "Value for key '" + key + "' should be '" + key + "'");
         }
         
-        LOG.info("HashMap content: {}", map);
+        log.info("HashMap content: {}", map);
     }
 
     @Test
     public void testTreeMap() {
-        LOG.info("Testing TreeMap===============================");
+        log.info("Testing TreeMap===============================");
         TreeMap<String, String> tmap = new TreeMap<>();
         
         // 测试添加元素
@@ -81,12 +79,12 @@ public class MapTest {
         assertNotNull(tmap.firstKey(), "TreeMap should have a first key");
         assertNotNull(tmap.lastKey(), "TreeMap should have a last key");
         
-        LOG.info("TreeMap content: {}", tmap);
+        log.info("TreeMap content: {}", tmap);
     }
 
     @Test
     public void testLinkedHashMap() {
-        LOG.info("Testing LinkedHashMap===============================");
+        log.info("Testing LinkedHashMap===============================");
         LinkedHashMap<String, String> lmap = new LinkedHashMap<>();
         
         // 测试添加元素
@@ -103,12 +101,12 @@ public class MapTest {
             assertEquals(key, lmap.get(key), "Value for key '" + key + "' should be '" + key + "'");
         }
         
-        LOG.info("LinkedHashMap content: {}", lmap);
+        log.info("LinkedHashMap content: {}", lmap);
     }
     
     @Test
     public void testHashSet() {
-        LOG.info("Testing HashSet===============================");
+        log.info("Testing HashSet===============================");
         HashSet<String> set = new HashSet<>();
         
         // 测试添加元素
@@ -129,12 +127,12 @@ public class MapTest {
         assertFalse(added, "HashSet should not add duplicate elements");
         assertEquals(KEYS.length, set.size(), "HashSet size should not change when adding duplicates");
         
-        LOG.info("HashSet content: {}", set);
+        log.info("HashSet content: {}", set);
     }
     
     @Test
     public void testLinkedHashSet() {
-        LOG.info("Testing LinkedHashSet===============================");
+        log.info("Testing LinkedHashSet===============================");
         LinkedHashSet<String> lset = new LinkedHashSet<>();
         
         // 测试添加元素
@@ -155,6 +153,6 @@ public class MapTest {
         assertFalse(added, "LinkedHashSet should not add duplicate elements");
         assertEquals(KEYS.length, lset.size(), "LinkedHashSet size should not change when adding duplicates");
         
-        LOG.info("LinkedHashSet content: {}", lset);
+        log.info("LinkedHashSet content: {}", lset);
     }
 }

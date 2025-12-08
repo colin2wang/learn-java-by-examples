@@ -1,5 +1,6 @@
 package com.colin.java.concurrent;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -17,6 +18,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Slf4j
 @DisplayName("ThreadPoolExecutor 7 参数验证")
 public class ThreadPoolExecutorTest {
 
@@ -64,19 +66,19 @@ public class ThreadPoolExecutorTest {
     @DisplayName("corePoolSize 条线程会立即创建")
     void testCorePoolSize() throws InterruptedException {
         int core = 3;
-        ThreadPoolExecutor pool = new ExecutorFactory(
+        try (ThreadPoolExecutor pool = new ExecutorFactory(
                 core, 10, 60, SECONDS,
                 new LinkedBlockingQueue<>(),
                 Executors.defaultThreadFactory(),
-                new ThreadPoolExecutor.AbortPolicy()).build();
+                new ThreadPoolExecutor.AbortPolicy()).build()) {
 
-        CountDownLatch latch = new CountDownLatch(core);
-        for (int i = 0; i < core; i++) {
-            pool.execute(latch::countDown);
+            CountDownLatch latch = new CountDownLatch(core);
+            for (int i = 0; i < core; i++) {
+                pool.execute(latch::countDown);
+            }
+            assertTrue(latch.await(1, SECONDS));
+            assertEquals(core, pool.getPoolSize());  // 证明已创建 core 条线程
         }
-        assertTrue(latch.await(1, SECONDS));
-        assertEquals(core, pool.getPoolSize());  // 证明已创建 core 条线程
-        pool.shutdown();
     }
 
     /* ---------- 2. 最大线程数是否生效 ---------- */
@@ -86,26 +88,26 @@ public class ThreadPoolExecutorTest {
         int core = 2, max = 5;
         // 容量为 1 的队列，很容易满
         SynchronousQueue<Runnable> queue = new SynchronousQueue<>();
-        ThreadPoolExecutor pool = new ExecutorFactory(
+        try (ThreadPoolExecutor pool = new ExecutorFactory(
                 core, max, 60, SECONDS,
                 queue,
                 Executors.defaultThreadFactory(),
-                new ThreadPoolExecutor.AbortPolicy()).build();
+                new ThreadPoolExecutor.AbortPolicy()).build()) {
 
-        CountDownLatch latch = new CountDownLatch(max);
-        // 提交 max 个任务，SynchronousQueue 会让后面任务必须新建线程
-        for (int i = 0; i < max; i++) {
-            pool.execute(() -> {
-                try {
-                    SECONDS.sleep(1);
-                } catch (InterruptedException ignored) {
-                }
-                latch.countDown();
-            });
+            CountDownLatch latch = new CountDownLatch(max);
+            // 提交 max 个任务，SynchronousQueue 会让后面任务必须新建线程
+            for (int i = 0; i < max; i++) {
+                pool.execute(() -> {
+                    try {
+                        SECONDS.sleep(1);
+                    } catch (InterruptedException ignored) {
+                    }
+                    latch.countDown();
+                });
+            }
+            assertTrue(latch.await(2, SECONDS));
+            assertEquals(max, pool.getPoolSize());  // 已涨到 max
         }
-        assertTrue(latch.await(2, SECONDS));
-        assertEquals(max, pool.getPoolSize());  // 已涨到 max
-        pool.shutdown();
     }
 
     /* ---------- 3. keepAliveTime 是否生效 ---------- */
@@ -113,31 +115,31 @@ public class ThreadPoolExecutorTest {
     @DisplayName("空闲线程超过 keepAliveTime 后被回收")
     void testKeepAliveTime() throws InterruptedException {
         int core = 1, max = 3;
-        ThreadPoolExecutor pool = new ExecutorFactory(
+        try (ThreadPoolExecutor pool = new ExecutorFactory(
                 core, max, 200, MILLISECONDS,
                 new SynchronousQueue<>(),
                 Executors.defaultThreadFactory(),
-                new ThreadPoolExecutor.AbortPolicy()).build();
+                new ThreadPoolExecutor.AbortPolicy()).build()) {
 
-        CountDownLatch latch = new CountDownLatch(2);
-        // Submit two tasks to create core and one temporary thread
-        pool.execute(() -> latch.countDown());
-        pool.execute(() -> {
-            try {
-                // Make this task take a bit longer
-                MILLISECONDS.sleep(50);
-            } catch (InterruptedException ignored) {
-            }
-            latch.countDown();
-        });
-        assertTrue(latch.await(1, SECONDS));
+            CountDownLatch latch = new CountDownLatch(2);
+            // Submit two tasks to create core and one temporary thread
+            pool.execute(() -> latch.countDown());
+            pool.execute(() -> {
+                try {
+                    // Make this task take a bit longer
+                    MILLISECONDS.sleep(50);
+                } catch (InterruptedException ignored) {
+                }
+                latch.countDown();
+            });
+            assertTrue(latch.await(1, SECONDS));
 
-        // Current pool size should be 2 (1 core + 1 temporary)
-        assertEquals(2, pool.getPoolSize());
-        // 等待 keepAliveTime 过期
-        MILLISECONDS.sleep(400);
-        assertEquals(core, pool.getPoolSize());  // 临时线程被回收
-        pool.shutdown();
+            // Current pool size should be 2 (1 core + 1 temporary)
+            assertEquals(2, pool.getPoolSize());
+            // 等待 keepAliveTime 过期
+            MILLISECONDS.sleep(400);
+            assertEquals(core, pool.getPoolSize());  // 临时线程被回收
+        }
     }
 
     /* ---------- 4. 自定义 ThreadFactory 是否生效 ---------- */
@@ -147,19 +149,19 @@ public class ThreadPoolExecutorTest {
         AtomicInteger seq = new AtomicInteger(0);
         ThreadFactory factory = r -> new Thread(r, "worker-" + seq.incrementAndGet());
 
-        ThreadPoolExecutor pool = new ExecutorFactory(
+        try (ThreadPoolExecutor pool = new ExecutorFactory(
                 1, 1, 60, SECONDS,
                 new LinkedBlockingQueue<>(),
                 factory,
-                new ThreadPoolExecutor.AbortPolicy()).build();
+                new ThreadPoolExecutor.AbortPolicy()).build()) {
 
-        CountDownLatch latch = new CountDownLatch(1);
-        pool.execute(() -> {
-            assertTrue(Thread.currentThread().getName().startsWith("worker-"));
-            latch.countDown();
-        });
-        assertTrue(latch.await(1, SECONDS));
-        pool.shutdown();
+            CountDownLatch latch = new CountDownLatch(1);
+            pool.execute(() -> {
+                assertTrue(Thread.currentThread().getName().startsWith("worker-"));
+                latch.countDown();
+            });
+            assertTrue(latch.await(1, SECONDS));
+        }
     }
 
     /* ---------- 5. 拒绝策略是否生效 ---------- */
@@ -171,40 +173,40 @@ public class ThreadPoolExecutorTest {
             try (FileWriter w = new FileWriter(rejectLog, true)) {
                 w.write("rejected\n");
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error(e.getMessage(), e);
             }
         };
 
         int core = 1, max = 2;
-        ThreadPoolExecutor pool = new ExecutorFactory(
+        try (ThreadPoolExecutor pool = new ExecutorFactory(
                 core, max, 60, SECONDS,
                 new ArrayBlockingQueue<>(1),  // 队列容量=1
                 Executors.defaultThreadFactory(),
-                handler).build();
+                handler).build()) {
 
-        CountDownLatch block = new CountDownLatch(1);  // 用来阻塞线程
-        // 先占满 1 核心 + 1 临时 + 1 队列 = 3 个任务
-        pool.execute(() -> {
-            try {
-                block.await();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        });
-        pool.execute(() -> {
-            try {
-                block.await();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        });
-        pool.execute(() -> {});  // 进入队列
-        // 第 4 个任务必然触发拒绝
-        pool.execute(() -> {});
+            CountDownLatch block = new CountDownLatch(1);  // 用来阻塞线程
+            // 先占满 1 核心 + 1 临时 + 1 队列 = 3 个任务
+            pool.execute(() -> {
+                try {
+                    block.await();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            });
+            pool.execute(() -> {
+                try {
+                    block.await();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            });
+            pool.execute(() -> {});  // 进入队列
+            // 第 4 个任务必然触发拒绝
+            pool.execute(() -> {});
 
-        block.countDown();  // 放行
-        pool.shutdown();
-        assertTrue(pool.awaitTermination(2, SECONDS));
+            block.countDown();  // 放行
+            pool.awaitTermination(2, SECONDS);
+        }
 
         // Verify rejection log
         assertTrue(rejectLog.exists());

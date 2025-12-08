@@ -1,6 +1,4 @@
-package com.colin.java.finance;
-
-import java.util.Arrays;
+package com.colin.java.market.matching;
 
 /**
  * 极简的高性能 OrderBook

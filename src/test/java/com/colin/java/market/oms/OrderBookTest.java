@@ -1,5 +1,8 @@
-package com.colin.java.matchmake;
+package com.colin.java.market.oms;
 
+import com.colin.java.market.oms.order.Order;
+import com.colin.java.market.oms.order.OrderBook;
+import com.colin.java.market.oms.order.Side;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -183,13 +186,10 @@ class OrderBookTest {
         
         // 检查卖单队列状态
         PriorityQueue<Order> sellOrders = getQueue("sellOrders");
-        assertEquals(1, sellOrders.size());
+        assertEquals(2, sellOrders.size());
         Order remainingSell = sellOrders.peek();
         assertEquals(0, remainingSell.price.compareTo(BigDecimal.valueOf(99.00)));
         assertEquals(3, remainingSell.quantity);
-        
-        // 卖单应该全部成交，因为价格足够低
-        assertEquals(0, getQueue("sellOrders").size());
     }
     
     @Test

@@ -13,13 +13,16 @@ package com.colin.java.callback;
  *  func(callback);
  */
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 回调持有者，实现ICallbackHolder接口
  * @author WangBing
  */
+@Slf4j
 class CallbackHolder implements ICallbackHolder {
     @Override
     public void callback() {
-        System.out.println(">>> callback()");
+        log.info(">>> callback()");
     }
 }

@@ -1,19 +1,15 @@
 package com.colin.java.collection;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Slf4j
 public class ConnectionTest {
-	private static final Logger LOG = LoggerFactory.getLogger(ConnectionTest.class);
 
 	@Test
 	public void testArrayReinitialization() {        
@@ -21,7 +17,7 @@ public class ConnectionTest {
 		int inta[] = new int[10];
 		inta = new int[20];
 		assertEquals(20, inta.length, "Array length should be 20 after reinitialization");
-		LOG.info("Array content: {}", Arrays.toString(inta));
+		log.info("Array content: {}", Arrays.toString(inta));
 	}
 
 	@Test
@@ -32,7 +28,7 @@ public class ConnectionTest {
 		assertTrue(list.contains("Colin"), "List should contain 'Colin'");
 		assertTrue(list.contains("is"), "List should contain 'is'");
 		assertTrue(list.contains("Here"), "List should contain 'Here'");
-		LOG.info("List content: {}", list);
+		log.info("List content: {}", list);
 	}
 	
 	@Test
@@ -42,7 +38,7 @@ public class ConnectionTest {
 		Set<String> set = new HashSet<>(list);
 		assertEquals(3, set.size(), "Set should contain 3 elements");
 		assertTrue(set.contains("Colin"), "Set should contain 'Colin'");
-		LOG.info("Set content: {}", set);
+		log.info("Set content: {}", set);
 	}
 	
 	@Test
@@ -53,6 +49,6 @@ public class ConnectionTest {
 		List<String> newList = new ArrayList<>(set);
 		assertEquals(3, newList.size(), "New list should contain 3 elements");
 		assertTrue(newList.contains("Colin"), "New list should contain 'Colin'");
-		LOG.info("New list content: {}", newList);
+		log.info("New list content: {}", newList);
 	}
 }

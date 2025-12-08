@@ -1,10 +1,12 @@
 package com.colin.java.file;
 
+import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.nio.file.*;
 
 import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
+@Slf4j
 public class FileWatcher {
 
     public static void main(String[] args) {
@@ -13,19 +15,21 @@ public class FileWatcher {
             public void run() {
                 try {
                     WatchService watcher = FileSystems.getDefault().newWatchService();
-                    Path dir = FileSystems.getDefault().getPath("F:\\Workspaces\\JetBrains\\IdeaProjects\\HelloJava");
+                    // 获取当前项目根目录
+                    Path dir = Paths.get(System.getProperty("user.dir"));
+                    log.info("Watching directory: {}", dir);
                     WatchKey key = dir.register(watcher, ENTRY_MODIFY);
                     while (true) {
                         key = watcher.take();
                         for (WatchEvent<?> event : key.pollEvents()) {
                             if (event.kind() == ENTRY_MODIFY) {
-                                System.out.println("Home dir changed!");
+                                log.info("Home dir changed!");
                             }
                         }
                         key.reset();
                     }
                 } catch (IOException | InterruptedException e) {
-                    e.printStackTrace();
+                    log.error(e.getMessage(), e);
                 }
             }
         });

@@ -1,8 +1,10 @@
 package com.colin.java.thread;
 
+import lombok.extern.slf4j.Slf4j;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+@Slf4j
 public class TestThreadPool {
 	
 	public static int count = 0;
@@ -17,7 +19,7 @@ public class TestThreadPool {
 				@Override
 				public void run() {
 					// TODO Auto-generated method stub
-					System.out.println(count++);
+					log.info("{}", count++);
 				}
 			});
 		}

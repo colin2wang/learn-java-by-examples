@@ -1,4 +1,6 @@
-package com.colin.java.matchmake;
+package com.colin.java.market.oms.order;
+
+import com.colin.java.market.oms.strategy.*;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -7,10 +9,10 @@ import java.util.PriorityQueue;
 
 public class OrderBook {
     // 买单队列：价格从高到低排序，价格相同则时间早的优先
-    PriorityQueue<Order> buyOrders;
+    public PriorityQueue<Order> buyOrders;
 
     // 卖单队列：价格从低到高排序，价格相同则时间早的优先
-    PriorityQueue<Order> sellOrders;
+    public PriorityQueue<Order> sellOrders;
     
     // 策略映射
     private final Map<OrderType, MatchingStrategy> strategyMap;

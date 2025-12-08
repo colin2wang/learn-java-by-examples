@@ -1,6 +1,6 @@
-package com.colin.java.finance;
+package com.colin.java.market.matching;
 
-public class Order {
+public class SimpleOrder {
     public long orderId;
     public long productId;
     public long price;
@@ -8,7 +8,7 @@ public class Order {
     public boolean isBuy; // true = Buy, false = Sell
     public long timestamp;
 
-    public Order(long orderId, long productId, long price, long quantity, boolean isBuy) {
+    public SimpleOrder(long orderId, long productId, long price, long quantity, boolean isBuy) {
         this.orderId = orderId;
         this.productId = productId;
         this.price = price;

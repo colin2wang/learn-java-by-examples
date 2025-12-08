@@ -1,19 +1,7 @@
-package com.colin.java.finance;
+package com.colin.java.market.matching;
 
 import java.util.ArrayList;
 import java.util.List;
-
-// 风控规则接口
-interface RiskRule {
-    boolean check(Order order);
-}
-
-// 模拟账户状态（内存中）
-class AccountContext {
-    public static long balance = 1_000_000L; // 模拟余额
-    public static long dailyNetLimit = 100_000L; // 单日净额限制
-    public static long currentDailyNet = 0L;
-}
 
 public class RiskManager {
     private List<RiskRule> rules = new ArrayList<>();
@@ -37,7 +25,7 @@ public class RiskManager {
     }
 
     // 执行风控
-    public boolean validate(Order order) {
+    public boolean validate(SimpleOrder order) {
         // 遍历规则，Fail-fast
         for (int i = 0; i < rules.size(); i++) {
             if (!rules.get(i).check(order)) {

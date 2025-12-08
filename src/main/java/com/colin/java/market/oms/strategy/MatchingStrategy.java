@@ -1,4 +1,7 @@
-package com.colin.java.matchmake;
+package com.colin.java.market.oms.strategy;
+
+import com.colin.java.market.oms.order.Order;
+import com.colin.java.market.oms.order.OrderBook;
 
 /**
  * 撮合策略接口

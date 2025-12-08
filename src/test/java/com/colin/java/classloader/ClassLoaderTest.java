@@ -1,19 +1,20 @@
 package com.colin.java.classloader;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * 测试类加载器
+ * @author WangBing
+ */
+@Slf4j
 public class ClassLoaderTest extends ClassA {
-    private static final Logger LOG = LoggerFactory.getLogger(ClassLoaderTest.class);
 
     @Test
     void testGetCurrentClassLoader() {
-        LOG.info("Testing current class loader");
+        log.info("Testing current class loader");
         
         // 获取当前类的类加载器
         ClassLoader loader = ClassLoaderTest.class.getClassLoader();
@@ -23,7 +24,7 @@ public class ClassLoaderTest extends ClassA {
         
         // 记录当前类加载器的信息
         String loaderName = loader.getClass().getName();
-        LOG.info("Current loader: {}, Type: {}", loader, loaderName);
+        log.info("Current loader: {}, Type: {}", loader, loaderName);
         
         // 验证类加载器类型（通常是 AppClassLoader 或类似的实现）
         assertTrue(loaderName.contains("AppClassLoader") || loaderName.contains("ClassLoader"), 
@@ -32,7 +33,7 @@ public class ClassLoaderTest extends ClassA {
 
     @Test
     void testGetParentClassLoader() {
-        LOG.info("Testing parent class loader");
+        log.info("Testing parent class loader");
         
         // 获取父类加载器
         ClassLoader currentLoader = ClassLoaderTest.class.getClassLoader();
@@ -43,7 +44,7 @@ public class ClassLoaderTest extends ClassA {
         
         // 记录父类加载器的信息
         String parentLoaderName = parentLoader.getClass().getName();
-        LOG.info("Parent loader: {}, Type: {}", parentLoader, parentLoaderName);
+        log.info("Parent loader: {}, Type: {}", parentLoader, parentLoaderName);
         
         // 验证父类加载器类型（通常是 ExtClassLoader 或类似的实现）
         assertTrue(parentLoaderName.contains("ExtClassLoader") || parentLoaderName.contains("PlatformClassLoader"),
@@ -52,7 +53,7 @@ public class ClassLoaderTest extends ClassA {
 
     @Test
     void testGetGrandparentClassLoader() {
-        LOG.info("Testing grandparent class loader");
+        log.info("Testing grandparent class loader");
         
         // 获取祖父类加载器
         ClassLoader currentLoader = ClassLoaderTest.class.getClassLoader();
@@ -62,12 +63,12 @@ public class ClassLoaderTest extends ClassA {
         // 验证祖父类加载器为 null（引导类加载器）
         // 注意：引导类加载器是 C/C++ 实现的，在 Java 中表示为 null
         assertNull(grandparentLoader, "Grandparent class loader (Bootstrap) should be null in Java representation");
-        LOG.info("Grandparent loader: {}", grandparentLoader);
+        log.info("Grandparent loader: {}", grandparentLoader);
     }
 
     @Test
     void testClassLoaderHierarchy() {
-        LOG.info("Testing class loader hierarchy");
+        log.info("Testing class loader hierarchy");
         
         // 验证类加载器的完整层次结构
         ClassLoader currentLoader = ClassLoaderTest.class.getClassLoader();
@@ -79,15 +80,15 @@ public class ClassLoaderTest extends ClassA {
         assertNotNull(parentLoader, "Parent class loader should not be null");
         assertNull(grandparentLoader, "Grandparent class loader should be null");
         
-        LOG.info("ClassLoader hierarchy verified:");
-        LOG.info("  Current: {}", currentLoader);
-        LOG.info("  Parent: {}", parentLoader);
-        LOG.info("  Grandparent (Bootstrap): {}", grandparentLoader);
+        log.info("ClassLoader hierarchy verified:");
+        log.info("  Current: {}", currentLoader);
+        log.info("  Parent: {}", parentLoader);
+        log.info("  Grandparent (Bootstrap): {}", grandparentLoader);
     }
 
     @Test
     void testClassLoadingForDifferentClasses() {
-        LOG.info("Testing class loading for different types of classes");
+        log.info("Testing class loading for different types of classes");
         
         // 测试不同类型的类的类加载器
         ClassLoader testClassLoader = ClassLoaderTest.class.getClassLoader();
@@ -106,17 +107,17 @@ public class ClassLoaderTest extends ClassA {
         // 验证自定义类使用相同的类加载器
         assertEquals(testClassLoader, aClassLoader, "TestClassLoader and Class A should be loaded by the same class loader");
         
-        LOG.info("Class loading verification complete:");
-        LOG.info("  TestClassLoader loaded by: {}", testClassLoader);
-        LOG.info("  Class A loaded by: {}", aClassLoader);
-        LOG.info("  Object loaded by: {}", objectClassLoader);
-        LOG.info("  String loaded by: {}", stringClassLoader);
+        log.info("Class loading verification complete:");
+        log.info("  TestClassLoader loaded by: {}", testClassLoader);
+        log.info("  Class A loaded by: {}", aClassLoader);
+        log.info("  Object loaded by: {}", objectClassLoader);
+        log.info("  String loaded by: {}", stringClassLoader);
     }
 
     // 辅助方法：添加 equals 方法以支持 testClassLoadingForDifferentClasses 测试
     private void assertEquals(Object actual, Object expected, String message) {
         if (actual == expected) {
-            LOG.debug("Assertion passed: {}", message);
+            log.debug("Assertion passed: {}", message);
         } else {
             throw new AssertionError(message + " (Expected: " + expected + ", Actual: " + actual + ")");
         }

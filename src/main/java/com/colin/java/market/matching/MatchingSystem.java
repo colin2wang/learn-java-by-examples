@@ -1,4 +1,4 @@
-package com.colin.java.finance;
+package com.colin.java.market.matching;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,7 +19,7 @@ public class MatchingSystem {
         ArrayOrderBook buyBook = new ArrayOrderBook(1024, false); // 买盘：高价优先
         ArrayOrderBook sellBook = new ArrayOrderBook(1024, true); // 卖盘：低价优先
 
-        public void process(Order order) {
+        public void process(SimpleOrder order) {
             if (order.isBuy) {
                 // 买单进来，去匹配卖盘
                 long traded = sellBook.match(order.price, order.quantity);
@@ -38,7 +38,7 @@ public class MatchingSystem {
         }
     }
 
-    public void handleOrder(Order order) {
+    public void handleOrder(SimpleOrder order) {
         // 1. 预风控
         if (!riskManager.validate(order)) {
             // throw new RuntimeException("Risk Check Failed");

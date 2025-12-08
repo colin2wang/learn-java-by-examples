@@ -1,9 +1,11 @@
 package com.colin.java.concurrent;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import java.util.concurrent.*;
 import java.util.stream.IntStream;
 
+@Slf4j
 @DisplayName("线程池性能对比")
 class ThreadPoolBenchmarkTest {
 
@@ -32,7 +34,7 @@ class ThreadPoolBenchmarkTest {
         long start = System.nanoTime();
         IntStream.range(0, TASK_COUNT).forEach(i -> TASK.run()); // 同步执行，逐个完成
         long ms = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start);
-        System.out.printf("sequential 耗时 = %,d ms%n", ms);
+        log.info("sequential 耗时 = {} ms", ms);
     }
 
     @Test
@@ -59,6 +61,6 @@ class ThreadPoolBenchmarkTest {
         latch.await();          // 阻塞等待所有任务完成
         long ms = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start);
         pool.shutdown();
-        System.out.printf("threadPool(%d) 耗时 = %,d ms%n", nThreads, ms);
+        log.info("threadPool({}) 耗时 = {} ms", nThreads, ms);
     }
 }

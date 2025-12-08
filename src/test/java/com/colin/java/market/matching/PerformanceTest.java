@@ -1,4 +1,4 @@
-package com.colin.java.finance;
+package com.colin.java.market.matching;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +26,7 @@ public class PerformanceTest {
     @Test
     @DisplayName("风控引擎延迟测试 (< 10 μs)")
     public void testRiskManagerLatency() {
-        Order order = new Order(1, 1001L, 99, 1, true);
+        SimpleOrder order = new SimpleOrder(1, 1001L, 99, 1, true);
 
         // 1. JVM 预热 (10万次调用，触发JIT编译)
         for (int i = 0; i < 100_000; i++) {

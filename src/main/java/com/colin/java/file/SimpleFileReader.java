@@ -3,11 +3,12 @@ package com.colin.java.file;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Objects;
 
 public class SimpleFileReader {
 	public static void main(String[] args) throws IOException {
 		InputStreamReader in = new InputStreamReader(
-				SimpleFileReader.class.getResourceAsStream("MessID.txt"));
+                Objects.requireNonNull(SimpleFileReader.class.getResourceAsStream("MessID.txt")));
 		BufferedReader bin = new BufferedReader(in);
 
 		StringBuffer sb = new StringBuffer();
@@ -15,7 +16,7 @@ public class SimpleFileReader {
 		String line = bin.readLine();
 
 		while (line != null) {
-			if (line.indexOf("class=MsoNormal") != -1) {
+			if (line.contains("class=MsoNormal")) {
 				
 				System.out.println(line.replaceAll("<P class=MsoNormal>", "").replaceAll("<SPAN", "").trim());
 			}

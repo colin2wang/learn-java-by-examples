@@ -1,5 +1,8 @@
 package com.colin.java.thread;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class MyPrintThread extends Thread {
 
 	private static Object lock = new Object();
@@ -16,7 +19,7 @@ public class MyPrintThread extends Thread {
 				while(seed <= 100) {
 					synchronized (lock) {
 						
-						System.out.println(seed);
+						log.info("{}", seed);
 						seed+=2;
 						
 						if (isFirstThread) {
@@ -27,13 +30,13 @@ public class MyPrintThread extends Thread {
 								lock.wait();
 							} catch (InterruptedException e) {
 								// TODO Auto-generated catch block
-								e.printStackTrace();
+								log.error(e.getMessage(), e);
 							}
 						}
 					}
 				}
 				
-				System.out.println(Thread.currentThread().getName() + " Ending...");
+				log.info("{} Ending...", Thread.currentThread().getName());
 			}
 		};
 		
@@ -44,7 +47,7 @@ public class MyPrintThread extends Thread {
 				while(seed <= 100) {
 					synchronized (lock) {
 						
-						System.out.println(seed);
+						log.info("{}", seed);
 						seed+=2;
 						
 						if (!isFirstThread) {
@@ -55,13 +58,13 @@ public class MyPrintThread extends Thread {
 								lock.wait();
 							} catch (InterruptedException e) {
 								// TODO Auto-generated catch block
-								e.printStackTrace();
+                                log.error(e.getMessage(), e);
 							}
 						}
 					}
 				}
 				
-				System.out.println(Thread.currentThread().getName() + " Ending...");
+				log.info("{} Ending...", Thread.currentThread().getName());
 			}
 		};
 		

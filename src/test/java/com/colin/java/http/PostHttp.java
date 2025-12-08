@@ -2,13 +2,15 @@ package com.colin.java.http;
 
 import java.io.IOException;
 
-import org.apache.commons.httpclient.Header;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.httpclient.methods.PostMethod;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
+@Slf4j
 public class PostHttp {
 
 	/**
@@ -36,50 +38,51 @@ public class PostHttp {
 	private static String getBodyString(String id) {
 		String str = "";
 		
-		// TODO Auto-generated method stub
-		HttpClient httpClient = new HttpClient();
+		// 创建OkHttpClient实例
+		OkHttpClient httpClient = new OkHttpClient();
+		
+		// 构建URL
 		String url = "https://home.cse.ust.hk/~csbb/Password_Only/csit561/grades.php?p=2";
-		PostMethod postMethod = new PostMethod(url);
-		// ������������ֵ
-		NameValuePair[] data = { new NameValuePair("stu_id", id),
-				new NameValuePair("section", "2"),
-				new NameValuePair("B1", "Submit") };
-		// ������ֵ����postMethod��
-		postMethod.setRequestBody(data);
-		// ִ��postMethod
-		int statusCode = 0;
-		try {
-			statusCode = httpClient.executeMethod(postMethod);
-		} catch (HttpException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		// HttpClient����Ҫ����ܺ�̷����������POST��PUT�Ȳ����Զ�����ת��
-		// 301����302
-		if (statusCode == HttpStatus.SC_MOVED_PERMANENTLY
-				|| statusCode == HttpStatus.SC_MOVED_TEMPORARILY) {
-			// ��ͷ��ȡ��ת��ĵ�ַ
-			Header locationHeader = postMethod.getResponseHeader("location");
-			String location = null;
-			if (locationHeader != null) {
-				location = locationHeader.getValue();
-				System.out.println("The page was redirected to:" + location);
+		
+		// 构建请求参数
+		RequestBody requestBody = new FormBody.Builder()
+				.add("stu_id", id)
+				.add("section", "2")
+				.add("B1", "Submit")
+				.build();
+		
+		// 构建请求
+		Request request = new Request.Builder()
+				.url(url)
+				.post(requestBody)
+				.build();
+		
+		// 执行请求
+		try (Response response = httpClient.newCall(request).execute()) {
+			int statusCode = response.code();
+
+            log.info("statusCode: {}", statusCode);
+			
+			// 处理重定向
+			if (statusCode == 301 || statusCode == 302) {
+				// 从响应头获取重定向的地址
+				String location = response.header("location");
+				if (location != null) {
+					log.info("The page was redirected to: {}", location);
+				} else {
+                    log.info("Location field value is null.");
+				}
+				return null;
 			} else {
-				System.err.println("Location field value is null.");
+				// 获取响应体
+				if (response.body() != null) {
+					str = response.body().string();
+				}
 			}
-			return null;
-		} else {
-			try {
-				str = postMethod.getResponseBodyAsString();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		} catch (IOException e) {
+			log.error(e.getMessage(), e);
 		}
-		postMethod.releaseConnection();
+		
 		return str;
 	}
 

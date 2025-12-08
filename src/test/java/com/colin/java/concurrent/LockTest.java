@@ -1,8 +1,7 @@
 package com.colin.java.concurrent;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -14,12 +13,11 @@ import java.util.concurrent.locks.ReentrantLock;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Slf4j
 public class LockTest {
-    private static final Logger LOG = LoggerFactory.getLogger(LockTest.class);
-
     @Test
     void testBasicLockUnlock() {
-        LOG.info("Testing basic lock and unlock functionality");
+        log.info("Testing basic lock and unlock functionality");
         Lock lock = new ReentrantLock();
         
         // Test that lock is available initially
@@ -27,20 +25,20 @@ public class LockTest {
         assertTrue(locked, "Should be able to acquire lock initially");
         
         try {
-            LOG.info("Lock acquired successfully");
+            log.info("Lock acquired successfully");
             // Verify lock is held
             boolean canReacquire = lock.tryLock();
             assertTrue(canReacquire, "ReentrantLock should allow reentrant acquisition");
             
             try {
-                LOG.info("Reentrant lock acquired successfully");
+                log.info("Reentrant lock acquired successfully");
             } finally {
                 lock.unlock();
-                LOG.info("Reentrant lock released");
+                log.info("Reentrant lock released");
             }
         } finally {
             lock.unlock();
-            LOG.info("Original lock released");
+            log.info("Original lock released");
         }
         
         // Verify lock is now available again
@@ -51,7 +49,7 @@ public class LockTest {
 
     @Test
     void testLockWithSharedResource() {
-        LOG.info("Testing lock with shared resource access");
+        log.info("Testing lock with shared resource access");
         final Lock lock = new ReentrantLock();
         final AtomicInteger counter = new AtomicInteger(0);
         final int iterations = 1000;
@@ -70,12 +68,12 @@ public class LockTest {
         
         // Verify counter value is correct
         assertEquals(iterations, counter.get(), "Counter should be incremented exactly " + iterations + " times");
-        LOG.info("Counter value: {}", counter.get());
+        log.info("Counter value: {}", counter.get());
     }
 
     @Test
     void testConcurrentLocking() throws InterruptedException {
-        LOG.info("Testing concurrent locking behavior");
+        log.info("Testing concurrent locking behavior");
         final Lock lock = new ReentrantLock();
         final AtomicInteger sharedCounter = new AtomicInteger(0);
         final int numThreads = 5;
@@ -88,13 +86,13 @@ public class LockTest {
             for (int i = 0; i < numThreads; i++) {
                 final int threadId = i;
                 executorService.submit(() -> {
-                    LOG.info("Thread {} started", threadId);
+                    log.info("Thread {} started", threadId);
                     for (int j = 0; j < operationsPerThread; j++) {
                         lock.lock();
                         try {
                             // Simulate work with shared resource
                             sharedCounter.incrementAndGet();
-                            LOG.debug("Thread {} incremented counter to {}", threadId, sharedCounter.get());
+                            log.debug("Thread {} incremented counter to {}", threadId, sharedCounter.get());
                             // Small sleep to make thread contention more likely
                             try {
                                 Thread.sleep(1);
@@ -105,7 +103,7 @@ public class LockTest {
                             lock.unlock();
                         }
                     }
-                    LOG.info("Thread {} completed", threadId);
+                    log.info("Thread {} completed", threadId);
                 });
             }
         } finally {
@@ -118,6 +116,6 @@ public class LockTest {
         int expectedTotal = numThreads * operationsPerThread;
         assertEquals(expectedTotal, sharedCounter.get(), 
                 "Counter should be incremented exactly " + expectedTotal + " times by all threads");
-        LOG.info("Final counter value after concurrent operations: {}", sharedCounter.get());
+        log.info("Final counter value after concurrent operations: {}", sharedCounter.get());
     }
 }
