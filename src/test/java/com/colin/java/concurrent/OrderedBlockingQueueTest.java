@@ -27,6 +27,12 @@ public class OrderedBlockingQueueTest {
         }
     }
 
+    /**
+     * Test ordered message consumption using PriorityBlockingQueue with multiple producers/consumers.
+     * Principle: 2 producers generate messages with sequential IDs in random order; PriorityBlockingQueue
+     * ensures consumers always dequeue the smallest ID first. Results are placed into an array by ID
+     * index to verify perfect ordering despite concurrent production.
+     */
     @Test
     void testMultiProducerMultiConsumerWithOrder() {
         final int TOTAL_COUNT = 20;

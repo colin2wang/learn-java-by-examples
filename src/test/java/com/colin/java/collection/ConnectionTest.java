@@ -11,6 +11,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Slf4j
 public class ConnectionTest {
 
+	/**
+	 * Test array reinitialization by reassigning to a new array.
+	 * Principle: creates an int[10], reassigns to int[20], and asserts the new length
+	 * is 20, demonstrating that reassignment replaces the reference, not the original array.
+	 */
 	@Test
 	public void testArrayReinitialization() {        
 		// 测试数组重新初始化
@@ -20,6 +25,11 @@ public class ConnectionTest {
 		log.info("Array content: {}", Arrays.toString(inta));
 	}
 
+	/**
+	 * Test List operations with Arrays.asList.
+	 * Principle: creates an immutable-backed List via Arrays.asList(), verifies size=3
+	 * and contains() for each element, demonstrating basic List interface usage.
+	 */
 	@Test
 	public void testListOperations() {
 		// 测试List操作
@@ -31,6 +41,11 @@ public class ConnectionTest {
 		log.info("List content: {}", list);
 	}
 	
+	/**
+	 * Test converting a List to a Set for deduplication.
+	 * Principle: wraps the List in a HashSet constructor; asserts size=3 and contains(),
+	 * demonstrating the List-to-Set conversion pattern.
+	 */
 	@Test
 	public void testSetConversion() {
 		// 测试Set转换
@@ -41,6 +56,11 @@ public class ConnectionTest {
 		log.info("Set content: {}", set);
 	}
 	
+	/**
+	 * Test converting a Set back to a List.
+	 * Principle: List→Set→List round-trip using HashSet and ArrayList constructors;
+	 * asserts the resulting list has the same size and contains the original elements.
+	 */
 	@Test
 	public void testSetToListConversion() {
 		// 测试转回List

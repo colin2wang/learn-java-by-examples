@@ -58,7 +58,9 @@ public class DefaultMethod {
     }
     
     /**
-     * 测试基本的默认方法使用 - 通过匿名内部类
+     * Test calling a default method via anonymous inner class implementation.
+     * Principle: creates a Formula anonymous class that implements calculate() and inherits
+     * the default sqrt() method, then verifies both methods produce correct results.
      */
     @Test
     public void testDefaultMethodWithAnonymousClass() {
@@ -85,7 +87,10 @@ public class DefaultMethod {
     }
     
     /**
-     * 测试使用Lambda表达式实现函数式接口
+     * Test calling a default method from a Lambda implementation.
+     * Principle: Formula is implemented via a Lambda that only provides calculate();
+     * the default sqrt() is inherited and callable, showing Lambdas can implement
+     * interfaces with default methods.
      */
     @Test
     public void testDefaultMethodWithLambda() {
@@ -108,7 +113,9 @@ public class DefaultMethod {
     }
     
     /**
-     * 测试实现类覆盖默认方法
+     * Test overriding a default method in an anonymous class.
+     * Principle: the anonymous Formula class overrides sqrt() to use Math.pow(a, 0.5)
+     * instead of the default Math.sqrt(a), demonstrating that implementations can replace defaults.
      */
     @Test
     public void testOverridingDefaultMethod() {
@@ -136,7 +143,9 @@ public class DefaultMethod {
     }
     
     /**
-     * 测试扩展接口中的默认方法
+     * Test default methods inherited from an extended interface.
+     * Principle: ExtendedFormula extends Formula and adds a new default square() method;
+     * the Lambda implementation can access both sqrt() (from Formula) and square() (from ExtendedFormula).
      */
     @Test
     public void testExtendedInterfaceDefaultMethod() {
@@ -159,7 +168,10 @@ public class DefaultMethod {
     }
     
     /**
-     * 测试解决默认方法冲突 - 当一个类实现两个具有相同签名默认方法的接口时
+     * Test resolving default method conflicts when implementing two interfaces.
+     * Principle: ConflictResolver implements both Formula and AnotherFormula which have
+     * the same sqrt() default method; the class must explicitly override sqrt() and choose
+     * Formula.super.sqrt(a) to resolve the ambiguity.
      */
     @Test
     public void testDefaultMethodConflictResolution() {
@@ -199,7 +211,10 @@ public class DefaultMethod {
     }
     
     /**
-     * 测试在实现类中通过接口名.super调用特定接口的默认方法
+     * Test calling specific interface default methods using InterfaceName.super syntax.
+     * Principle: MethodSelector provides two helper methods that explicitly call
+     * Formula.super.sqrt() and AnotherFormula.super.sqrt() respectively, proving
+     * that you can selectively invoke either parent's default implementation.
      */
     @Test
     public void testCallingSpecificInterfaceDefaultMethod() {

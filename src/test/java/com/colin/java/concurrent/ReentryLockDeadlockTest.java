@@ -8,6 +8,12 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class ReentryLockDeadlockTest {
 
+    /**
+     * Test deadlock detection using ReentrantLock and assertTimeoutPreemptively.
+     * Principle: two threads acquire locks in opposite order (lock1→lock2 vs lock2→lock1),
+     * creating a circular wait. The test uses a 5-second timeout; if the threads deadlock,
+     * join() blocks forever and the timeout fires, proving the deadlock.
+     */
     @Test
     void testDeadlockWithTimeout() {
         // 设定预期：如果代码在 5 秒内没有执行完，则抛出异常，测试失败

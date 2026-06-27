@@ -15,6 +15,12 @@ public class AlternatePrintMyLockSupportTest {
     // 定义三个线程引用，方便内部类访问
     static Thread t1, t2, t3;
 
+    /**
+     * Test three threads printing 1-9 in round-robin order using LockSupport.
+     * Principle: each thread parks itself, prints its number, then unparks the next thread;
+     * the main thread kicks off the cycle by unparking t1 first. LockSupport.park/unpark
+     * uses a permit-based mechanism that avoids spurious wakeup issues.
+     */
     @Test
     void testABCPrintWithLockSupport() {
         final int MAX_PRINT = 9;

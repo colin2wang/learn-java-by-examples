@@ -12,6 +12,11 @@ import static org.junit.jupiter.api.Assertions.*;
 @Slf4j
 public class ClassLoaderTest extends ClassA {
 
+    /**
+     * Test retrieving the current class's class loader.
+     * Principle: uses Class.getClassLoader() to obtain the AppClassLoader and asserts
+     * it is non-null and of the expected application class loader type.
+     */
     @Test
     void testGetCurrentClassLoader() {
         log.info("Testing current class loader");
@@ -31,6 +36,11 @@ public class ClassLoaderTest extends ClassA {
                 "Current loader should be an application class loader");
     }
 
+    /**
+     * Test retrieving the parent class loader (Extension/Platform class loader).
+     * Principle: chains getParent() from the AppClassLoader and asserts the parent
+     * is an ExtClassLoader or PlatformClassLoader, demonstrating the delegation model.
+     */
     @Test
     void testGetParentClassLoader() {
         log.info("Testing parent class loader");
@@ -51,6 +61,11 @@ public class ClassLoaderTest extends ClassA {
                 "Parent loader should be an extension or platform class loader");
     }
 
+    /**
+     * Test that the grandparent class loader is null (Bootstrap class loader).
+     * Principle: the Bootstrap loader is implemented in C/C++ and represented as null
+     * in Java; asserts that getParent().getParent() returns null.
+     */
     @Test
     void testGetGrandparentClassLoader() {
         log.info("Testing grandparent class loader");
@@ -66,6 +81,11 @@ public class ClassLoaderTest extends ClassA {
         log.info("Grandparent loader: {}", grandparentLoader);
     }
 
+    /**
+     * Test the full class loader hierarchy: App → Extension → Bootstrap(null).
+     * Principle: walks up the delegation chain and asserts each level's existence/nullness,
+     * verifying the standard JDK class loader parent-delegation model.
+     */
     @Test
     void testClassLoaderHierarchy() {
         log.info("Testing class loader hierarchy");
@@ -86,6 +106,11 @@ public class ClassLoaderTest extends ClassA {
         log.info("  Grandparent (Bootstrap): {}", grandparentLoader);
     }
 
+    /**
+     * Test class loading for different types of classes (JDK vs custom).
+     * Principle: verifies JDK core classes (Object, String) are loaded by Bootstrap (null),
+     * while custom classes (ClassLoaderTest, ClassA) share the same AppClassLoader instance.
+     */
     @Test
     void testClassLoadingForDifferentClasses() {
         log.info("Testing class loading for different types of classes");

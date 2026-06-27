@@ -169,6 +169,11 @@ public class BasicSortWithTests {
 
     private static final int ARRAY_SIZE = 100;
 
+    /**
+     * Test Bubble Sort correctness on a random array.
+     * Principle: generates a random array, sorts a copy with Arrays.sort as reference,
+     * then runs bubbleSort and asserts both arrays are identical.
+     */
     @Test
     @DisplayName("Bubble Sort should sort an array correctly")
     void testBubbleSort() {
@@ -180,6 +185,11 @@ public class BasicSortWithTests {
         assertArrayEquals(sortedArray, unsortedArray, "Bubble Sort failed to sort the array correctly");
     }
 
+    /**
+     * Test Insertion Sort correctness on a random array.
+     * Principle: compares insertionSort output against Arrays.sort reference output
+     * to verify the O(n²) in-place sorting algorithm produces correct results.
+     */
     @Test
     @DisplayName("Insertion Sort should sort an array correctly")
     void testInsertionSort() {
@@ -191,6 +201,11 @@ public class BasicSortWithTests {
         assertArrayEquals(sortedArray, unsortedArray, "Insertion Sort failed to sort the array correctly");
     }
 
+    /**
+     * Test Selection Sort correctness on a random array.
+     * Principle: finds minimum element each pass and swaps; verified by comparing
+     * against Arrays.sort reference on the same input data.
+     */
     @Test
     @DisplayName("Selection Sort should sort an array correctly")
     void testSelectionSort() {
@@ -202,6 +217,11 @@ public class BasicSortWithTests {
         assertArrayEquals(sortedArray, unsortedArray, "Selection Sort failed to sort the array correctly");
     }
 
+    /**
+     * Test QuickSort correctness on a random array.
+     * Principle: partition-based divide-and-conquer sort verified by comparing
+     * against Arrays.sort reference; covers average-case O(n log n) performance.
+     */
     @Test
     @DisplayName("Quick Sort should sort an array correctly")
     void testQuickSort() {
@@ -213,6 +233,11 @@ public class BasicSortWithTests {
         assertArrayEquals(sortedArray, unsortedArray, "Quick Sort failed to sort the array correctly");
     }
 
+    /**
+     * Test all sorting algorithms against edge cases via parameterized test.
+     * Principle: provides empty, single-element, sorted, reverse-sorted, duplicate,
+     * and mixed-sign arrays to verify each algorithm handles boundary conditions.
+     */
     @ParameterizedTest
     @MethodSource("edgeCaseProvider")
     @DisplayName("Sorting algorithms should handle edge cases")
@@ -252,6 +277,11 @@ public class BasicSortWithTests {
         );
     }
 
+    /**
+     * Test the isSorted helper utility method.
+     * Principle: checks ascending-order traversal on sorted, unsorted, empty,
+     * and single-element arrays to validate the detection logic.
+     */
     @Test
     @DisplayName("isSorted method correctly identifies sorted and unsorted arrays")
     void testIsSorted() {

@@ -17,9 +17,9 @@ public class ObjectReferenceTest {
     private static final Logger logger = LoggerFactory.getLogger(ObjectReferenceTest.class);
     
     /**
-     * 测试软引用(SoftReference)的行为
-     * 软引用在内存不足时才会被回收
-     * 注意：由于字符串常量池的特殊性，此测试使用了自定义对象
+     * Test SoftReference behavior: retained until memory is low.
+     * Principle: creates an Object wrapped in SoftReference, nulls the strong reference,
+     * runs GC; in memory-rich conditions the soft reference should survive (not guaranteed).
      */
     @Test
     public void testSoftReferenceBehavior() {
@@ -56,8 +56,10 @@ public class ObjectReferenceTest {
     }
     
     /**
-     * 测试弱引用(WeakReference)的行为
-     * 弱引用在垃圾回收时会被回收
+     * Test WeakReference behavior: collected on next GC cycle.
+     * Principle: creates an Object wrapped in WeakReference, nulls the strong reference,
+     * runs GC; the weak reference should be cleared (get() returns null) because weak refs
+     * are always collected when no strong references exist.
      */
     @Test
     public void testWeakReferenceBehavior() {
@@ -104,8 +106,10 @@ public class ObjectReferenceTest {
     }
     
     /**
-     * 测试字符串常量与弱引用的交互
-     * 演示字符串常量池对引用回收的影响
+     * Test that string constants resist collection by weak/soft references.
+     * Principle: a string literal ("test_constant") lives in the constant pool;
+     * even when only weak/soft references point to it, the GC typically does not collect it
+     * because the pool maintains a strong reference internally.
      */
     @Test
     public void testStringConstantWithReferences() {

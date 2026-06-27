@@ -14,6 +14,12 @@ import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 
 public class BlockingQueueTest {
 
+    /**
+     * Test producer-consumer pattern using a bounded BlockingQueue.
+     * Principle: producer puts items into a capacity-2 ArrayBlockingQueue (blocks when full),
+     * consumer takes items (blocks when empty); verifies all 10 items are consumed in order,
+     * demonstrating the queue's built-in thread-safety and blocking semantics.
+     */
     @Test
     void testProducerConsumerWithBlockingQueue() {
         // 1. 准备数据

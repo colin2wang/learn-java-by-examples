@@ -15,6 +15,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
 public class LockTest {
+    /**
+     * Test basic ReentrantLock lock/unlock and reentrant acquisition.
+     * Principle: acquires the lock via tryLock(), demonstrates reentrant acquisition
+     * (same thread can lock twice), then unlocks both levels and verifies availability.
+     */
     @Test
     void testBasicLockUnlock() {
         log.info("Testing basic lock and unlock functionality");
@@ -47,6 +52,11 @@ public class LockTest {
         lock.unlock();
     }
 
+    /**
+     * Test ReentrantLock protecting a shared counter in single-threaded sequential access.
+     * Principle: locks/unlocks around each increment of an AtomicInteger, verifying
+     * that the critical section correctly serializes 1000 sequential updates.
+     */
     @Test
     void testLockWithSharedResource() {
         log.info("Testing lock with shared resource access");
@@ -71,6 +81,11 @@ public class LockTest {
         log.info("Counter value: {}", counter.get());
     }
 
+    /**
+     * Test concurrent lock contention with 5 threads competing for a ReentrantLock.
+     * Principle: each of 5 threads increments a shared counter 100 times under lock;
+     * verifies the final count equals 500, proving the lock prevents lost updates.
+     */
     @Test
     void testConcurrentLocking() throws InterruptedException {
         log.info("Testing concurrent locking behavior");

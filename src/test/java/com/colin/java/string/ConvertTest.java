@@ -17,7 +17,9 @@ public class ConvertTest {
     private static final String TEST_STRING = "missyou";
     
     /**
-     * 测试将字符转换为数字表示（相对于'a'的偏移量）
+     * Test converting each character in the string to its numeric offset from 'a'.
+     * Principle: subtract 'a' from each char to get a 0-based index (e.g. 'm'-'a'=12),
+     * then verify the concatenated result matches the expected offset sequence.
      */
     @Test
     public void testCharToNumberConversion() {
@@ -34,7 +36,9 @@ public class ConvertTest {
     }
     
     /**
-     * 测试将数字应用转换公式：(temp * 3 + 1) % 26
+     * Test the cipher transformation formula (offset*3+1)%26 applied to each character.
+     * Principle: applies a simple linear congruential cipher to each offset value,
+     * then uses modular arithmetic (%26) to wrap around the alphabet range.
      */
     @Test
     public void testNumberTransformation() {
@@ -54,7 +58,9 @@ public class ConvertTest {
     }
     
     /**
-     * 测试将转换后的数字转回字符
+     * Test back-converting transformed numeric offsets back to characters.
+     * Principle: applies the formula (offset*3+1)%26, ensures non-negative result,
+     * then adds 'a' to map back to a character in the lowercase alphabet.
      */
     @Test
     public void testTransformedNumberToChar() {
@@ -77,7 +83,9 @@ public class ConvertTest {
     }
     
     /**
-     * 测试单个字符的转换功能
+     * Test single character transformation by spot-checking specific characters (a, z, m).
+     * Principle: verifies the full pipeline (offset→formula→char) for individual edge cases
+     * to ensure boundary characters are handled correctly.
      */
     @Test
     public void testSingleCharTransformation() {
@@ -99,7 +107,9 @@ public class ConvertTest {
     }
     
     /**
-     * 测试整个转换过程的完整性
+     * Test the end-to-end string transformation process.
+     * Principle: feeds the complete input string through transformString(), then asserts
+     * the output is non-null, has the same length as input, and matches the expected result.
      */
     @Test
     public void testFullTransformationProcess() {

@@ -14,8 +14,9 @@ public class MathTest {
     private static final Logger logger = LoggerFactory.getLogger(MathTest.class);
     
     /**
-     * 测试Math.round对负数的四舍五入处理
-     * 验证Math.round(-10.5)的结果
+     * Test Math.round() rounding behavior for negative numbers.
+     * Principle: Math.round(-10.5) rounds toward positive infinity (returns -10, not -11);
+     * verifies this behavior along with other negative boundary cases.
      */
     @Test
     public void testMathRoundWithNegativeNumbers() {
@@ -39,8 +40,9 @@ public class MathTest {
     }
     
     /**
-     * 测试Java中的^运算符（按位异或）
-     * 澄清^不是幂运算符而是按位异或运算符
+     * Test the ^ operator is bitwise XOR, not exponentiation.
+     * Principle: 2 ^ 4 = 6 (binary XOR: 0010 XOR 0100 = 0110), not 16;
+     * contrasts with Math.pow(2, 4) = 16.0 for the actual power operation.
      */
     @Test
     public void testBitwiseXOROperator() {
@@ -70,7 +72,9 @@ public class MathTest {
     }
     
     /**
-     * 测试Math类的常用数学函数
+     * Test common Math utility functions: abs, max, min, sqrt, random.
+     * Principle: verifies each function returns the expected value for standard inputs,
+     * and that Math.random() produces values in the [0.0, 1.0) range.
      */
     @Test
     public void testCommonMathFunctions() {

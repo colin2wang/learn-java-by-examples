@@ -13,6 +13,12 @@ import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 
 public class AlternatePrintSemaphoreTest {
 
+    /**
+     * Test three threads printing 1-9 in round-robin order using Semaphores.
+     * Principle: creates a semaphore chain (A→B→C→A) where each thread acquires its
+     * semaphore before printing, then releases the next thread's semaphore to form
+     * a relay pattern; AtomicInteger tracks the global counter.
+     */
     @Test
     void testABCPrintWithSemaphore() {
         // 目标：打印 1 到 9

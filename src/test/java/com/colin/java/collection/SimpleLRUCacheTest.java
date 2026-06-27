@@ -33,6 +33,11 @@ public class SimpleLRUCacheTest {
         cache = new SimpleLRUCache<>(3);
     }
 
+    /**
+     * Test basic put and get on a SimpleLRUCache backed by LinkedHashMap.
+     * Principle: extends LinkedHashMap with accessOrder=true and overrides removeEldestEntry()
+     * to auto-evict when size > capacity; verifies basic insertion and retrieval.
+     */
     @Test
     void testBasicPutAndGet() {
         // 测试基本的put和get操作
@@ -45,6 +50,11 @@ public class SimpleLRUCacheTest {
         assertEquals(3, cache.get("key3"));
     }
 
+    /**
+     * Test LRU eviction strategy: get() refreshes access order.
+     * Principle: fills capacity-3 cache, accesses key1 to move it to most-recently-used,
+     * then inserts key4; verifies key2 (least recently used) is evicted.
+     */
     @Test
     void testLRUEviction() {
         // 测试LRU淘汰策略
@@ -64,6 +74,11 @@ public class SimpleLRUCacheTest {
         assertEquals(4, cache.get("key4"));
     }
 
+    /**
+     * Test that updating an existing key does not change cache size.
+     * Principle: put(key1, 1) then put(key1, 100) updates the value in-place;
+     * LinkedHashMap's accessOrder mode refreshes its position without eviction.
+     */
     @Test
     void testUpdateExistingKey() {
         // 测试更新已存在的键
@@ -78,6 +93,11 @@ public class SimpleLRUCacheTest {
         assertEquals(2, cache.size());  // 大小不应改变
     }
 
+    /**
+     * Test access-order tracking determines eviction sequence.
+     * Principle: puts A,B,C then accesses A (making it most recent); adding D and E
+     * evicts B then C (the two least-recently-used entries).
+     */
     @Test
     void testAccessOrder() {
         // 测试访问顺序对缓存的影响
@@ -99,6 +119,11 @@ public class SimpleLRUCacheTest {
         assertEquals(5, cache.get("E"));
     }
 
+    /**
+     * Test edge cases: capacity=1 cache and null values.
+     * Principle: a single-entry cache evicts the only element on each new put;
+     * also verifies that null values are allowed and retrievable.
+     */
     @Test
     void testEdgeCases() {
         // 测试边界情况

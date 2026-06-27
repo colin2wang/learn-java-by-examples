@@ -25,6 +25,11 @@ public class ClassExtendTest {
         System.out.println("Call B");
     }
 
+    /**
+     * Test static method binding with a polymorphic reference (declared as A, instantiated as B).
+     * Principle: static methods are resolved at compile time based on the declared type (A),
+     * not the runtime type (B), so call(A a) is invoked even though the object is B.
+     */
     @Test
     void testStaticMethodBindingWithPolymorphicReference() {
         log.info("Testing static method binding with polymorphic reference");
@@ -50,6 +55,11 @@ public class ClassExtendTest {
         }
     }
 
+    /**
+     * Test static method binding with a concrete B type reference.
+     * Principle: when call() is invoked with a directly-typed B argument,
+     * the compiler selects the more specific overload call(B b).
+     */
     @Test
     void testStaticMethodBindingWithConcreteType() {
         log.info("Testing static method binding with concrete type");
@@ -74,6 +84,11 @@ public class ClassExtendTest {
         }
     }
 
+    /**
+     * Test method overloading resolution for static methods across A, B, and polymorphic refs.
+     * Principle: verifies that static method dispatch is based on compile-time declared type:
+     * A instance → call(A), B instance → call(B), A a = new B() → call(A).
+     */
     @Test
     void testMethodOverloadingResolution() {
         log.info("Testing method overloading resolution");

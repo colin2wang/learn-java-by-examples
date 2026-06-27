@@ -25,8 +25,9 @@ public class CalculateTest {
     }
 
     /**
-     * 测试概率计算方法
-     * 验证getP方法在不同参数下的计算结果
+     * Test probability calculation method getP(x, y).
+     * Principle: verifies that the Laplace-smoothed probability formula (x+0.005)/(y+0.01)
+     * produces values in [0,1] and maintains monotonicity with increasing numerator.
      */
     @Test
     public void testProbabilityCalculation() {
@@ -62,8 +63,9 @@ public class CalculateTest {
     }
 
     /**
-     * 测试乘法计算
-     * 验证多个小数相乘的结果
+     * Test floating-point multiplication precision with multiple decimal values.
+     * Principle: multiplies several floats together and verifies results are
+     * non-negative and less than 1 when all factors are in (0,1).
      */
     @Test
     public void testMultiplicationCalculation() {
@@ -97,8 +99,9 @@ public class CalculateTest {
     }
 
     /**
-     * 测试大数除法计算
-     * 验证大数除法的精度和结果
+     * Test large-number division precision with scientific notation.
+     * Principle: divides values by 1e7/2e8 and asserts results match expected
+     * floating-point values within a small epsilon tolerance (1e-10).
      */
     @Test
     public void testLargeNumberDivision() {
@@ -121,8 +124,9 @@ public class CalculateTest {
     }
 
     /**
-     * 测试字符数组操作
-     * 验证字符数组的比较和字符统计功能
+     * Test char array operations: length, element access, and character counting.
+     * Principle: creates multiple char arrays, verifies lengths and specific positions,
+     * counts occurrences of 'K' and 'E' across all arrays, and tests String conversion.
      */
     @Test
     public void testCharArrayOperations() {

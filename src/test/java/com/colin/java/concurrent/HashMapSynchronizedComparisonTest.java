@@ -26,11 +26,9 @@ public class HashMapSynchronizedComparisonTest {
     private static final int TIMEOUT_SECONDS = 60;
 
     /**
-     * 测试普通HashMap在并发环境下的线程不安全性
-     * 演示问题：
-     * 1. 数据丢失
-     * 2. 可能出现的异常
-     * 3. 最终大小可能小于预期
+     * Test plain HashMap thread-unsafety under concurrent access.
+     * Principle: 50 threads each put 1000 entries into a plain HashMap; collects exceptions
+     * and final size to demonstrate data loss and potential ConcurrentModificationException.
      */
     @Test
     public void testHashMapThreadUnsafe() throws InterruptedException {
@@ -84,8 +82,9 @@ public class HashMapSynchronizedComparisonTest {
     }
     
     /**
-     * 测试使用Collections.synchronizedMap包装后的线程安全性
-     * 应该不会出现异常，且所有操作都能正确完成
+     * Test Collections.synchronizedMap thread safety under concurrent access.
+     * Principle: wraps HashMap with Collections.synchronizedMap(), which synchronizes
+     * every method call; asserts zero exceptions are caught during concurrent operations.
      */
     @Test
     public void testSynchronizedMapThreadSafe() throws InterruptedException {
@@ -141,7 +140,9 @@ public class HashMapSynchronizedComparisonTest {
     }
     
     /**
-     * 对比测试：同时运行两种Map实现，观察差异
+     * Comparative test running both HashMap and synchronizedMap side by side.
+     * Principle: sequentially runs the unsafe and safe tests, then logs conclusions
+     * about the differences in thread safety between the two approaches.
      */
     @Test
     public void compareThreadSafety() throws InterruptedException {

@@ -50,6 +50,11 @@ public class SingletonTest {
         instance.set(null, null);
     }
 
+    /**
+     * Test basic double-checked locking singleton behavior.
+     * Principle: calls getInstance() twice and asserts both calls return the same
+     * reference (assertSame), proving the singleton pattern works in single-threaded context.
+     */
     @Test
     void testBasicSingleton() {
         Singleton s1 = Singleton.getInstance();
@@ -59,6 +64,12 @@ public class SingletonTest {
         assertSame(s1, s2, "两次获取的对象应该是同一个引用");
     }
 
+    /**
+     * Test singleton thread safety with 100 concurrent threads.
+     * Principle: uses a CountDownLatch as a starting gun to maximize contention;
+     * all threads call getInstance() simultaneously and store results in a synchronized Set.
+     * The volatile + double-checked locking ensures only one instance is ever created.
+     */
     @Test
     void testConcurrency() {
         // 模拟 100 个线程并发获取
@@ -104,9 +115,9 @@ public class SingletonTest {
     }
 
     /**
-     * 补充测试：防止通过反射攻击破坏单例
-     * (虽然你的原始代码没有防反射逻辑，但在面试中这通常是下一个问题)
-     * 这个测试预期会"成功破坏"，除非你在私有构造器里加了判断。
+     * Test singleton vulnerability to reflection attack.
+     * Principle: uses reflection to access the private constructor and create a second instance,
+     * proving that without explicit reflection protection, the singleton contract can be broken.
      */
     @Test
     void testReflectionAttack() throws Exception {

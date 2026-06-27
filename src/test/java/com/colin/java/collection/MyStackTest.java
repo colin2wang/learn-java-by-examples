@@ -15,6 +15,11 @@ public class MyStackTest {
         myStack = new MyStack();
     }
 
+    /**
+     * Test a custom multi-stack implementation using a single array.
+     * Principle: a flag array tags each element with a stack number (1 or 2); put/pop/peek
+     * filter by flag to simulate two independent LIFO stacks sharing one backing array.
+     */
     @Test
     public void testMyStackOperations() {
         // 测试空栈的情况

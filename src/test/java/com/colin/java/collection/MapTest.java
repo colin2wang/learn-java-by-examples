@@ -12,6 +12,11 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MapTest {
     private static final String[] KEYS = {"name", "age", "sex", "address", "phone", "email"};
 
+    /**
+     * Test ConcurrentHashMap basic put/containsKey/get operations.
+     * Principle: inserts key-value pairs and verifies size, containsKey, and get()
+     * return correct values, demonstrating the thread-safe map's standard API.
+     */
     @Test
     public void testConcurrentHashMap() {
         log.info("Testing ConcurrentHashMap===============================");
@@ -34,6 +39,11 @@ public class MapTest {
         log.info("ConcurrentHashMap content: {}", cmap);
     }
 
+    /**
+     * Test HashMap basic put/containsKey/get operations.
+     * Principle: inserts 6 entries and verifies the standard HashMap API returns
+     * correct values; demonstrates the most common non-thread-safe map implementation.
+     */
     @Test
     public void testHashMap() {
         log.info("Testing HashMap===============================");
@@ -56,6 +66,11 @@ public class MapTest {
         log.info("HashMap content: {}", map);
     }
 
+    /**
+     * Test TreeMap sorted key ordering.
+     * Principle: inserts entries and verifies firstKey()/lastKey() are non-null,
+     * demonstrating that TreeMap maintains keys in natural sorted order (Red-Black tree).
+     */
     @Test
     public void testTreeMap() {
         log.info("Testing TreeMap===============================");
@@ -82,6 +97,11 @@ public class MapTest {
         log.info("TreeMap content: {}", tmap);
     }
 
+    /**
+     * Test LinkedHashMap insertion-order preservation.
+     * Principle: inserts entries and verifies size and content; LinkedHashMap uses
+     * a doubly-linked list alongside the hash table to maintain insertion order.
+     */
     @Test
     public void testLinkedHashMap() {
         log.info("Testing LinkedHashMap===============================");
@@ -104,6 +124,11 @@ public class MapTest {
         log.info("LinkedHashMap content: {}", lmap);
     }
     
+    /**
+     * Test HashSet uniqueness guarantee.
+     * Principle: adds elements and verifies size; attempts to add a duplicate returns false
+     * and does not increase size, demonstrating HashSet's equals+hashCode deduplication.
+     */
     @Test
     public void testHashSet() {
         log.info("Testing HashSet===============================");
@@ -130,6 +155,11 @@ public class MapTest {
         log.info("HashSet content: {}", set);
     }
     
+    /**
+     * Test LinkedHashSet insertion-order preservation with deduplication.
+     * Principle: adds elements and verifies insertion order is maintained; duplicate add()
+     * returns false, demonstrating LinkedHashSet combines HashSet uniqueness with linked-list ordering.
+     */
     @Test
     public void testLinkedHashSet() {
         log.info("Testing LinkedHashSet===============================");

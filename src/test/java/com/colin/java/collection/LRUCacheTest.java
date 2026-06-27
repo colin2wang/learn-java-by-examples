@@ -117,6 +117,11 @@ class LRUCacheTest {
         lruCache = new LRUCache(2);
     }
 
+    /**
+     * Test basic put and get operations on the LRU cache.
+     * Principle: inserts two key-value pairs into a capacity-2 cache, verifies get()
+     * returns correct values, and returns -1 for a non-existent key.
+     */
     @Test
     void testBasicPutAndGet() {
         lruCache.put(1, 1);
@@ -127,6 +132,11 @@ class LRUCacheTest {
         assertEquals(-1, lruCache.get(3)); // 不存在的 key
     }
 
+    /**
+     * Test LRU eviction policy when cache exceeds capacity.
+     * Principle: fills a capacity-2 cache, then inserts a 3rd entry; the least-recently-used
+     * entry (key=1) should be evicted, verified by get(1) returning -1.
+     */
     @Test
     void testEvictionPolicy() {
         // 容量是 2
@@ -143,6 +153,11 @@ class LRUCacheTest {
         assertEquals(3, lruCache.get(3));
     }
 
+    /**
+     * Test that accessing an entry updates its recency in the LRU cache.
+     * Principle: after putting keys 1 and 2, get(1) moves key 1 to the head (most recent);
+     * inserting key 3 then evicts key 2 (the actual least-recently-used).
+     */
     @Test
     void testAccessUpdatesRecency() {
         lruCache.put(1, 1);
@@ -161,6 +176,11 @@ class LRUCacheTest {
         assertEquals(3, lruCache.get(3));
     }
 
+    /**
+     * Test updating an existing key moves it to most-recently-used position.
+     * Principle: put(1,1) then put(1,10) updates the value and refreshes recency;
+     * inserting key 3 evicts key 2 instead of the updated key 1.
+     */
     @Test
     void testUpdateExistingKey() {
         lruCache.put(1, 1);

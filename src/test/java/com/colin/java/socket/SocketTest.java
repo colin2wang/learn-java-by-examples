@@ -189,7 +189,9 @@ public class SocketTest {
     }
     
     /**
-     * Tests server initialization
+     * Test NIO server initialization: selector open, server bound, non-blocking mode.
+     * Principle: verifies the Selector is open, ServerSocketChannel is bound to the correct
+     * host:port, and the channel is configured in non-blocking mode for NIO.
      */
     @Test
     public void testServerInitialization() throws IOException {
@@ -211,7 +213,10 @@ public class SocketTest {
     }
     
     /**
-     * Tests registration of ServerSocketChannel to Selector
+     * Test registering ServerSocketChannel with Selector for OP_ACCEPT events.
+     * Principle: registers the server channel with the selector for accept operations;
+     * verifies the returned SelectionKey is valid, interest ops include OP_ACCEPT,
+     * and the selector has exactly one registered key.
      */
     @Test
     public void testServerRegistrationToSelector() throws IOException {
@@ -234,9 +239,9 @@ public class SocketTest {
     }
     
     /**
-     * Tests basic client-server communication
-     * This test starts a server and a client, sends data from client to server,
-     * and verifies the server responds
+     * Test full client-server echo communication over NIO channels.
+     * Principle: starts a server thread using Selector-based event loop; a client connects,
+     * sends a message, and reads back the echo response; verifies the response contains "Echo".
      */
     @Test
     public void testClientServerCommunication() throws IOException, InterruptedException {
@@ -283,7 +288,9 @@ public class SocketTest {
     }
     
     /**
-     * Tests server shutdown and resource cleanup
+     * Test graceful server shutdown and resource cleanup.
+     * Principle: starts the server, sets the running flag to false, then joins the server thread;
+     * verifies the thread terminates and resources (Selector, ServerSocketChannel) are closed.
      */
     @Test
     public void testServerShutdown() throws IOException, InterruptedException {
@@ -307,7 +314,9 @@ public class SocketTest {
     }
     
     /**
-     * Tests multiple client connections
+     * Test multiple concurrent client connections to the NIO server.
+     * Principle: spawns 3 client threads that each connect, send a message, read a response,
+     * and count down a latch; verifies all clients complete successfully.
      */
     @Test
     public void testMultipleClientConnections() throws IOException, InterruptedException {

@@ -13,8 +13,9 @@ import org.slf4j.LoggerFactory;
 @Slf4j
 public class CallBackTest {
     /**
-     * 测试基本的回调机制
-     * 验证回调方法是否被正确调用
+     * Test basic callback mechanism using concrete CallbackHolder implementation.
+     * Principle: passes a CallbackHolder to CallbackUser.func(), which invokes
+     * the holder's callback() method, demonstrating the inversion-of-control pattern.
      */
     @Test
     public void testBasicCallback() {
@@ -24,7 +25,9 @@ public class CallBackTest {
     }
     
     /**
-     * 测试使用匿名内部类实现回调
+     * Test callback implementation using an anonymous inner class.
+     * Principle: creates an inline ICallbackHolder implementation via anonymous class
+     * to demonstrate pre-Java-8 callback style.
      */
     @Test
     public void testCallbackWithAnonymousClass() {
@@ -40,7 +43,9 @@ public class CallBackTest {
     }
     
     /**
-     * 测试使用Lambda表达式实现回调
+     * Test callback implementation using a Lambda expression.
+     * Principle: since ICallbackHolder is a @FunctionalInterface, a Lambda () -> log.info(...)
+     * can replace the anonymous class, demonstrating Java 8 functional callback style.
      */
     @Test
     public void testCallbackWithLambda() {

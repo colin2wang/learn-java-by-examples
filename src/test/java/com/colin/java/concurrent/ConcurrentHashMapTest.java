@@ -20,6 +20,11 @@ public class ConcurrentHashMapTest {
     private static final int THREAD_COUNT = 100;
     private static final int OPERATIONS_PER_THREAD = 100;
 
+    /**
+     * Test HashMap under concurrent access to demonstrate thread-safety issues.
+     * Principle: 100 threads each put 100 entries into a plain HashMap; catches exceptions
+     * that may occur due to concurrent structural modification (e.g., infinite loops on resize).
+     */
     @Test
     public void testHashMapConcurrentAccess() throws InterruptedException {
         LOG.info("Testing HashMap for concurrent access issues");
@@ -56,6 +61,11 @@ public class ConcurrentHashMapTest {
         }
     }
     
+    /**
+     * Test ConcurrentHashMap thread safety under concurrent writes.
+     * Principle: 100 threads each put 100 UUID-keyed entries; ConcurrentHashMap uses
+     * segment locking (CAS + synchronized on bins) to guarantee no exceptions or data corruption.
+     */
     @Test
     public void testConcurrentHashMapSafety() throws InterruptedException {
         LOG.info("Testing ConcurrentHashMap for thread safety");
@@ -92,6 +102,11 @@ public class ConcurrentHashMapTest {
         }
     }
     
+    /**
+     * Test ConcurrentHashMap basic CRUD and atomic operations.
+     * Principle: verifies put/get/update/remove/computeIfAbsent/computeIfPresent
+     * work correctly on a single-threaded basis, validating the API contract.
+     */
     @Test
     public void testConcurrentHashMapOperations() {
         LOG.info("Testing ConcurrentHashMap basic operations");

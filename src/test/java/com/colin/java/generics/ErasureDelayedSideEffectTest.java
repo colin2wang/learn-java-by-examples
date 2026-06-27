@@ -13,7 +13,12 @@ class ErasureDelayedSideEffectTest {
     // List<Integer> a = new ArrayList<>();
     // List<Number> b = a;          // ← 编译错误: incompatible types
 
-    /* 2. 编译期通过，运行期暴露擦除的副作用 */
+    /**
+     * Demo: type erasure delayed side effect — raw type bypasses generic safety at runtime.
+     * Principle: assigns List<Integer> to List<? extends Number>, then uses raw List reference
+     * to insert a Double; the ClassCastException only surfaces when取出 as Integer, proving
+     * that generics are erased at runtime and safety checks are compile-time only.
+     */
     @Test
     void demoErasureSideEffect() {
         List<Integer> intList = new ArrayList<>();
@@ -35,7 +40,12 @@ class ErasureDelayedSideEffectTest {
         });
     }
     
-    /* 3. 演示 List<? extends Number> 中元素的实际类型 */
+    /**
+     * Demo: actual element types preserved through wildcard list references.
+     * Principle: a List<Number> with Integer/Double/Long elements is assigned to
+     * List<? extends Number>; getClass() on retrieved elements confirms their original
+     * runtime types are preserved despite generic type erasure.
+     */
     @Test
     void demonstrateActualElementTypes() {
         // 创建一个存储不同数值类型的列表

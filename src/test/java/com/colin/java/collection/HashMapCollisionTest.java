@@ -59,6 +59,12 @@ public class HashMapCollisionTest {
         }
     }
 
+    /**
+     * Test HashMap behavior under deliberate hash collisions.
+     * Principle: uses a DummyKey class whose hashCode() always returns 1, forcing all 1000
+     * entries into the same bucket; verifies all values are still retrievable, then benchmarks
+     * collision vs non-collision performance to show O(n) degradation in linked-list buckets.
+     */
     @Test
     public void testHashMapCollisionBehavior() {
         // 创建一个 HashMap，初始容量为 16

@@ -23,6 +23,11 @@ public class PerformanceTest {
         }
     }
 
+    /**
+     * Test risk manager latency stays under 10 microseconds.
+     * Principle: warms up the JIT compiler with 100k calls, then benchmarks 1000 iterations
+     * of riskManager.validate() to measure average latency in nanoseconds.
+     */
     @Test
     @DisplayName("风控引擎延迟测试 (< 10 μs)")
     public void testRiskManagerLatency() {
@@ -47,6 +52,11 @@ public class PerformanceTest {
         assertTrue(avgTime < 10_000, "Risk check should be < 10 μs");
     }
 
+    /**
+     * Test matching engine core logic latency stays under 5 microseconds.
+     * Principle: pre-fills an order book with 500 price levels, JIT-warms the match() method,
+     * then measures a single match() call that consumes multiple levels to verify sub-5μs latency.
+     */
     @Test
     @DisplayName("撮合引擎核心逻辑测试 (< 2 μs)")
     public void testMatchingEngineLatency() {

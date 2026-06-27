@@ -15,6 +15,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 public class ThreadSafeTest {
 
+    /**
+     * Test basic synchronizedMap wrapping a HashMap.
+     * Principle: creates a Collections.synchronizedMap and performs simple put operations
+     * to verify the wrapper compiles and runs without error in single-threaded context.
+     */
     @Test
     public void testOriginal() {
         Map<Integer, Integer> map = new HashMap<>();
@@ -24,7 +29,11 @@ public class ThreadSafeTest {
         synchronizedMap.put(2, 2);
     }
 
-    // 测试普通HashMap的线程不安全性
+    /**
+     * Test plain HashMap thread-unsafety under concurrent writes.
+     * Principle: 10 threads each put 1000 entries with overlapping keys into a HashMap;
+     * logs the final size, which may be smaller than expected due to lost updates.
+     */
     @Test
     public void testHashMapThreadSafety() throws InterruptedException {
         final Map<Integer, Integer> hashMap = new HashMap<>();
@@ -60,7 +69,11 @@ public class ThreadSafeTest {
         log.info("注意：由于线程不安全，结果可能小于预期的10000个操作后的大小，甚至可能抛出异常");
     }
 
-    // 测试Collections.synchronizedMap的线程安全性
+    /**
+     * Test Collections.synchronizedMap thread safety under concurrent writes.
+     * Principle: wraps HashMap with synchronizedMap and runs the same 10-thread × 1000-ops test;
+     * the synchronized wrapper prevents lost updates, so the final size is deterministic.
+     */
     @Test
     public void testSynchronizedMapThreadSafety() throws InterruptedException {
         final Map<Integer, Integer> hashMap = new HashMap<>();
@@ -97,8 +110,12 @@ public class ThreadSafeTest {
         log.info("由于线程安全，结果应该是预期的大小，不会抛出异常");
     }
 
-    // 演示HashMap在并发环境下可能出现的问题：死循环（JDK 1.7链表头插法导致）
-    // 注意：在JDK 1.8+中，HashMap已使用尾插法，很难直接复现死循环，但这里通过模拟展示概念
+    /**
+     * Demonstrate HashMap infinite loop issue (JDK 1.7 head-insertion resize).
+     * Principle: explains the mechanism where concurrent resize in JDK 1.7 can create
+     * a circular linked list, causing get() to loop forever; JDK 1.8+ uses tail-insertion
+     * to mitigate but doesn't fully eliminate the risk.
+     */
     @Test
     public void demonstrateHashMapInfiniteLoop() throws InterruptedException {
         log.info("===== 演示HashMap并发死循环问题（概念说明） =====");
@@ -113,7 +130,12 @@ public class ThreadSafeTest {
         log.info("解决方法：使用ConcurrentHashMap或Collections.synchronizedMap");
     }
 
-    // 演示HashMap在并发环境下的数据丢失问题
+    /**
+     * Demonstrate HashMap data loss under concurrent put operations.
+     * Principle: 20 threads each put 1000 unique-key entries; concurrent slot access
+     * can cause one thread's write to overwrite another's, resulting in fewer entries
+     * than the expected 20,000.
+     */
     @Test
     public void demonstrateHashMapDataLoss() throws InterruptedException {
         log.info("===== 演示HashMap并发数据丢失问题 =====");
@@ -154,7 +176,11 @@ public class ThreadSafeTest {
         log.info("数据丢失原因：并发put时，两个线程可能同时检测到同一个槽位为空，导致后写入的数据覆盖前写入的数据");
     }
 
-    // 演示HashMap在并发环境下的数据覆盖问题
+    /**
+     * Demonstrate HashMap data overwrite: all threads writing to the same key.
+     * Principle: 10 threads each write to "shared-key" with sleep(1) between writes;
+     * the final value depends on which thread wrote last, demonstrating lost-update semantics.
+     */
     @Test
     public void demonstrateHashMapDataOverwrite() throws InterruptedException {
         log.info("===== 演示HashMap并发数据覆盖问题 =====");

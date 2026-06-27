@@ -11,6 +11,12 @@ public class DeadlockDemoTest {
     private final Object resourceA = new Object();
     private final Object resourceB = new Object();
 
+    /**
+     * Test deadlock detection using assertTimeoutPreemptively.
+     * Principle: two threads acquire resources in opposite order (A→B vs B→A),
+     * causing a circular wait; the test fails if the threads don't complete within 2 seconds,
+     * proving the deadlock occurred.
+     */
     @Test
     void testDeadlock() {
         // 使用 assertTimeoutPreemptively 设置超时时间 (例如 2 秒)

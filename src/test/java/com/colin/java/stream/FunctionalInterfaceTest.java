@@ -44,7 +44,9 @@ public class FunctionalInterfaceTest {
     }
     
     /**
-     * 测试基本Lambda表达式创建函数式接口
+     * Test basic Lambda expression creating a custom functional interface instance.
+     * Principle: instantiates Converter<String, Integer> via Lambda (from) -> Integer.valueOf(from),
+     * demonstrating @FunctionalInterface with a single abstract method.
      */
 	@Test
 	public void testBasicLambdaExpression() {
@@ -56,7 +58,9 @@ public class FunctionalInterfaceTest {
 	}
 
     /**
-     * 测试使用方法引用替代Lambda表达式
+     * Test method reference as a shorthand for Lambda expression.
+     * Principle: uses Integer::valueOf instead of (from) -> Integer.valueOf(from),
+     * showing that method references are syntactic sugar for single-method Lambdas.
      */
     @Test
     public void testMethodReference() {
@@ -69,7 +73,9 @@ public class FunctionalInterfaceTest {
     }
     
     /**
-     * 测试标准Java 8函数式接口 - BiFunction
+     * Test standard Java 8 BiFunction functional interface.
+     * Principle: creates a BiFunction<Integer, Integer, Integer> that adds two integers,
+     * demonstrating a built-in functional interface that takes two arguments.
      */
     @Test
     public void testStandardFunctionalInterface() {
@@ -82,7 +88,9 @@ public class FunctionalInterfaceTest {
     }
     
     /**
-     * 测试带有默认方法的函数式接口
+     * Test functional interface with a default method.
+     * Principle: EnhancedConverter has both an abstract convert() and a default getDescription();
+     * the Lambda implements only the abstract method while the default method is inherited.
      */
     @Test
     public void testDefaultMethod() {
@@ -101,7 +109,9 @@ public class FunctionalInterfaceTest {
     }
     
     /**
-     * 测试静态方法在函数式接口中的使用
+     * Test static factory method in a functional interface.
+     * Principle: EnhancedConverter.of() wraps a basic Converter into an EnhancedConverter
+     * via a static method, demonstrating that static methods don't affect functional interface status.
      */
     @Test
     public void testStaticMethod() {
@@ -116,7 +126,9 @@ public class FunctionalInterfaceTest {
     }
     
     /**
-     * 测试Consumer函数式接口 - 消费一个值而不返回结果
+     * Test Consumer functional interface — consumes a value without returning.
+     * Principle: Consumer<String> accepts a string and appends " processed" to a StringBuilder
+     * as a side effect, demonstrating the accept() method contract.
      */
     @Test
     public void testConsumerInterface() {
@@ -132,7 +144,9 @@ public class FunctionalInterfaceTest {
     }
     
     /**
-     * 测试Predicate函数式接口 - 用于布尔值表达式
+     * Test Predicate functional interface — returns a boolean result.
+     * Principle: Predicate<String> tests if length > 5; applies test() to two strings
+     * and asserts true/false results, demonstrating the test() method contract.
      */
     @Test
     public void testPredicateInterface() {
@@ -152,7 +166,9 @@ public class FunctionalInterfaceTest {
     }
     
     /**
-     * 测试在集合上下文中使用函数式接口
+     * Test Predicate via bound method reference in collection context.
+     * Principle: "A"::startsWith creates a Predicate that tests if the argument starts with "A",
+     * demonstrating how bound method references capture the receiver at creation time.
      */
     @Test
     public void testFunctionalInterfaceInCollection() {

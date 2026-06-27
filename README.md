@@ -52,58 +52,124 @@ src/
     └── java/com/colin/java/  # Test classes and examples organized by topic
 ```
 
+## Test Documentation
+
+Every `@Test` method across all test files includes an English Javadoc comment explaining **what the test verifies** and **how it works** (the principle). The format is:
+
+```java
+/**
+ * Test <what is being tested>.
+ * Principle: <how the test works and what concept it verifies>.
+ */
+@Test
+void testMethodName() { ... }
+```
+
+This makes it easy to understand each test's purpose without reading the implementation details.
+
 ## Detailed Examples by Package
 
-### Collection Framework (`com.colin.java.collection`)
-Examples demonstrating Java's collection framework:
-- `HashMapLongChainTest`: Demonstrates hash collision effects on HashMap performance
-- `HashMapSynchronizedComparisonTest`: Compares thread safety of HashMap vs. Collections.synchronizedMap
-- `ConnectionTest`: Tests for collection connections and relationships
+### Algorithm (`com.colin.java.algorithm`)
+- `BasicSortWithTests`: Implements and tests Bubble Sort, Insertion Sort, Selection Sort, and QuickSort with parameterized edge cases
 
-### Concurrent Programming (`com.colin.java.concurrent`)
-Examples showcasing concurrency concepts:
-- `ExecutorFactoryTest`: Demonstrates thread pool configuration, keep-alive time settings, and rejection policies
-- `SingletonTest`: Tests singleton implementation in concurrent environments
+### Bitmap (`com.colin.java.bitmap`)
+- `LoginBitmapStoreTest`: Tests bitmap-based login tracking with RoaringBitmap for 100M-level user IDs
+- `SnowflakeConverterTest`: Tests Snowflake ID encoding/decoding and common-friend intersection using RoaringBitmap
 
-### Thread Management (`com.colin.java.thread`)
-Thread-related examples:
-- `MyMainClass`: Demonstrates thread creation and execution
-- `YieldTest`: Shows thread yielding behavior
-- `TestLock`: Demonstrates thread locking mechanisms
+### Calculate (`com.colin.java.calculate`)
+- `CalculateTest`: Tests probability calculation, floating-point multiplication precision, and char array operations
+
+### Callback (`com.colin.java.callback`)
+- `CallBackTest`: Demonstrates callback patterns using concrete classes, anonymous inner classes, and Lambda expressions
 
 ### Class Loading (`com.colin.java.classloader`)
-Examples exploring Java's class loading system:
-- `ClassLoaderTest`: Demonstrates class loader hierarchy, parent delegation model, and loading different types of classes
-- `ClassA`: Simple class for class loader testing
+- `ClassLoaderTest`: Explores class loader hierarchy (App → Extension → Bootstrap), parent delegation, and JDK vs custom class loading
 
-### Inheritance and Polymorphism (`com.colin.java.inheritance`)
-Examples demonstrating OOP concepts:
-- `TestConstructor`: Tests constructor behavior in inheritance hierarchies
-- `TestInheritance`: Explores interface implementation and naming conflicts
+### Collection Framework (`com.colin.java.collection`)
+- `HashMapCollisionTest`: Demonstrates hash collision behavior and performance degradation with custom key classes
+- `HashMapSynchronizedComparisonTest`: Compares thread safety of HashMap vs Collections.synchronizedMap under concurrent access
+- `LRUCacheTest`: Hand-written LRU cache using HashMap + doubly-linked list
+- `SimpleLRUCacheTest`: LRU cache implementation extending LinkedHashMap with accessOrder
+- `MapTest`: Tests ConcurrentHashMap, HashMap, TreeMap, LinkedHashMap, HashSet, and LinkedHashSet
+- `MyStackTest`: Custom multi-stack implementation using a single array with flag tagging
+- `ConnectionTest`: Tests array reinitialization, List/Set conversion, and basic collection operations
+
+### Concurrent Programming (`com.colin.java.concurrent`)
+- `AlternatePrintMyLockSupportTest`: Three threads printing 1-9 in round-robin using LockSupport.park/unpark
+- `AlternatePrintSemaphoreTest`: Three threads printing 1-9 using Semaphore relay chain
+- `BlockingQueueTest`: Producer-consumer pattern with bounded ArrayBlockingQueue
+- `BingDeadLockTest`: Deadlock demonstration and detection
+- `CompletableFutureTest`: Compares Callable+Future vs CompletableFuture async patterns
+- `ConcurrentHashMapTest`: Tests ConcurrentHashMap thread safety and basic CRUD operations
+- `CyclicBarrierClassicTest`: CyclicBarrier for synchronized start and reusability across rounds
+- `DeadlockDemoTest`: Deadlock detection using assertTimeoutPreemptively
+- `LockConditionTest`: Producer-consumer using ReentrantLock + Condition variables
+- `LockTest`: ReentrantLock basics, shared resource protection, and concurrent lock contention
+- `MapThreadUnsafeTest`: Compares HashMap, ConcurrentHashMap, and Hashtable under concurrent put/get
+- `MyLockSupportTest`: LockSupport usage patterns
+- `MySemaphore`: Custom semaphore implementation
+- `OrderedBlockingQueueTest`: Ordered message consumption using PriorityBlockingQueue
+- `ReentryLockDeadlockTest`: Deadlock detection with ReentrantLock and timeout
+- `SingleThreadTest`: Basic single-thread execution with join and timeout
+- `SingletonTest`: Double-checked locking singleton, thread safety with 100 threads, and reflection attack
+- `ThreadPoolBenchmarkTest`: Benchmarks sequential vs FixedThreadPool execution of 10k tasks
+- `ThreadPoolExecutorTest`: Validates all 7 ThreadPoolExecutor parameters (core, max, keepAlive, factory, rejection handler)
+- `ThreadSafeTest`: HashMap thread-unsafety demos: infinite loop (JDK 1.7), data loss, and data overwrite
 
 ### Extension Mechanisms (`com.colin.java.extension`)
-- `ClassExtendTest`: Demonstrates static method binding rules with polymorphic references
+- `ClassExtendTest`: Static method binding rules — compile-time type resolution vs runtime polymorphism
 
-### Stream API and Lambdas (`com.colin.java.stream`)
-- `LambdaTest`: Comprehensive examples of Lambda expressions, comparing with anonymous classes and showing simplified syntax
+### Generics (`com.colin.java.generics`)
+- `ErasureDelayedSideEffectTest`: Type erasure side effects — raw type bypass and wildcard element type preservation
 
-### File Operations (`com.colin.java.file`)
-- `TestReader`: Demonstrates file reading operations
-- `TestFileReader`: Shows buffered file reading techniques
-- `TestStudentIDReader`: Examples of reading specific data formats from files
+### Inheritance and Polymorphism (`com.colin.java.inheritance`)
+- `InterfaceTest`: Interface default method inheritance (add/sub)
+- `TestConstructor`, `TestInheritance`, `TestStatic`, `MyTest`: Constructor chaining, interface conflicts, and static member behavior
+
+### Market / OMS (`com.colin.java.market.oms`)
+- `OrderBookTest`: Order book with price-time priority matching, partial fills, and multi-level sweeps
+- `StockMatchingDemo`: Stock matching system demonstration
+- `MatchingStrategyDemo`: Matching strategy patterns
+
+### Market / Matching Performance (`com.colin.java.market.matching`)
+- `PerformanceTest`: JIT-warmed latency benchmarks for risk manager (<10μs) and matching engine (<5μs)
+
+### Math (`com.colin.java.math`)
+- `MathTest`: Math.round() negative rounding, ^ as bitwise XOR (not power), and common Math utility functions
+
+### Memory (`com.colin.java.memory`)
+- `ConstantPoolOOMTest`: String.intern() deduplication, constant pool capacity, and literal vs intern behavior
+- `ObjectReferenceTest`: SoftReference/WeakReference behavior and string constant pool interaction with weak refs
+
+### Number (`com.colin.java.number`)
+- `NumberCompareTest`: Integer cache behavior — == vs equals() for values in [-128, 127] vs outside
 
 ### Object Behavior (`com.colin.java.object`)
-- `HashcodeTest`: Tests hashcode implementation behavior
+- `EqualsTest`: Integer constant pool, valueOf() caching, equals/hashCode contract in HashSet and HashMap
+- `HashcodeTest`: String hashCode collision ("Aa" == "BB"), identity hash uniqueness, and HashSet usage
+
+### Socket / NIO (`com.colin.java.socket`)
+- `SocketTest`: NIO Selector-based non-blocking server with echo, multi-client, and graceful shutdown
+- `NettyRpcTest`: Netty-based RPC client-server with method dispatch and error handling
+
+### Stream API and Lambdas (`com.colin.java.stream`)
+- `LambdaTest`: Lambda syntax progression: anonymous class → full syntax → simplified → method reference → Stream pipeline
+- `FunctionalInterfaceTest`: Custom @FunctionalInterface, BiFunction, Consumer, Predicate, default/static methods
+- `DefaultMethod`: Interface default methods, inheritance, override, and conflict resolution via InterfaceName.super
+- `ChatCountTest`: Character frequency counting with Stream groupingBy and counting
+
+### String (`com.colin.java.string`)
+- `ConvertTest`: Character-to-number offset conversion, cipher formula (n*3+1)%26, and full string transformation pipeline
 
 ### Testing Techniques (`com.colin.java.testing`)
-- `Test`: Contains simple algorithm implementations and testing approaches
+- `Test`: Simple algorithm implementations and testing approaches
 
 ## Contributing
 
 Contributions to improve or expand the examples are welcome. Please ensure that any additions:
 
 1. Follow the existing code style
-2. Include appropriate tests
+2. Include appropriate tests with English Javadoc comments explaining what each `@Test` method tests and the principle behind it
 3. Add clear comments explaining the concepts demonstrated
 4. Are placed in the appropriate package based on topic
 

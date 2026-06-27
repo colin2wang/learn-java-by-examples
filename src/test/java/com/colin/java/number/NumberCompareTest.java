@@ -7,6 +7,12 @@ import org.junit.jupiter.api.Test;
  */
 public class NumberCompareTest {
 
+    /**
+     * Test Integer cache behavior for values in [-128, 127] vs outside.
+     * Principle: Integer.valueOf() caches values in -128..127, so autoboxed Integer
+     * variables with values 127 share the same reference (== is true), while values 255
+     * create distinct objects (== is false, but equals() is true).
+     */
     @Test
     void testNumberCompare() {
         /*

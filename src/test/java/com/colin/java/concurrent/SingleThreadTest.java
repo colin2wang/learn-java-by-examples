@@ -7,6 +7,11 @@ import java.time.Duration;
 
 public class SingleThreadTest {
 
+    /**
+     * Test basic single-thread execution with join and timeout.
+     * Principle: starts a thread that prints 1-10 with 1-second sleeps, then joins it
+     * within a 5-second timeout; verifies the thread completes before the deadline.
+     */
     @Test
     public void test1() {
         Assertions.assertTimeoutPreemptively(Duration.ofSeconds(5), () -> {

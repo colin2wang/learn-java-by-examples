@@ -14,6 +14,11 @@ class SnowflakeConverterTest {
     private final RMBitmapStore store = new RMBitmapStore();
     private final Random rnd = new Random(0);
 
+    /**
+     * Test Snowflake ID encoding/decoding idempotency and uniqueness.
+     * Principle: encodes two different Snowflake IDs to compact int representations,
+     * verifies they differ and that encoding the same ID twice produces the same result.
+     */
     @Test
     void testEncodeDecode() {
         long sf1 = 1385987847360512000L; // 示例 Snowflake
@@ -24,6 +29,11 @@ class SnowflakeConverterTest {
         assertEquals(id1, converter.encode(sf1)); // 幂等
     }
 
+    /**
+     * Test finding common friends between two users using RoaringBitmap intersection.
+     * Principle: adds 10k friends per user with 50% overlap, then uses bitmap AND
+     * to compute common friends and asserts the cardinality equals 5k.
+     */
     @Test
     void testCommonFriends() {
         // 构造 2 个用户，各加 10 k 好友，其中 5 k 重叠
@@ -38,6 +48,12 @@ class SnowflakeConverterTest {
         assertEquals(5_000, common.getCardinality());
     }
 
+    /**
+     * Test memory efficiency and intersection with 1M users, 200 friends each.
+     * Principle: creates a large-scale friend graph using RoaringBitmaps, computes
+     * intersection for two users, and prints per-user memory consumption to validate
+     * that RoaringBitmap's compression keeps memory usage low.
+     */
     @Test
     void testMillionUsers() {
         // 1 000 000 用户，每人 200 好友，验证内存与交集

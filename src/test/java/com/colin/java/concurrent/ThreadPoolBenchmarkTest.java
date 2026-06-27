@@ -21,6 +21,11 @@ class ThreadPoolBenchmarkTest {
         }
     };
 
+    /**
+     * Benchmark: sequential single-thread execution of 10k tasks.
+     * Principle: runs tasks synchronously via forEach, measuring wall-clock time
+     * as a baseline for comparison with thread pool execution.
+     */
     @Test
     @DisplayName("无线程池：单线程顺序执行")
     void sequential() {
@@ -37,6 +42,11 @@ class ThreadPoolBenchmarkTest {
         log.info("sequential 耗时 = {} ms", ms);
     }
 
+    /**
+     * Benchmark: FixedThreadPool with CPU-core count threads executing 10k tasks.
+     * Principle: uses a CountDownLatch to wait for all async tasks; compares total time
+     * against sequential execution to demonstrate parallelism benefit.
+     */
     @Test
     @DisplayName("固定线程池：CPU 核数")
     void withThreadPool() throws InterruptedException {

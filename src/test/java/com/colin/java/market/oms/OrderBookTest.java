@@ -28,6 +28,11 @@ class OrderBookTest {
         return (PriorityQueue<T>) field.get(orderBook);
     }
 
+    /**
+     * Test adding a basic sell order to the order book.
+     * Principle: creates a SELL order and verifies it is added to the sellOrders PriorityQueue
+     * with correct price and quantity.
+     */
     @Test
     void testBasicSellOrderAddition() throws Exception {
         // 测试基本的卖单添加
@@ -39,6 +44,11 @@ class OrderBookTest {
         assertEquals(10, sellOrders.peek().quantity);
     }
 
+    /**
+     * Test adding a basic buy order to the order book.
+     * Principle: creates a BUY order and verifies it is added to the buyOrders PriorityQueue
+     * with correct price and quantity.
+     */
     @Test
     void testBasicBuyOrderAddition() throws Exception {
         // 测试基本的买单添加
@@ -50,6 +60,11 @@ class OrderBookTest {
         assertEquals(5, buyOrders.peek().quantity);
     }
 
+    /**
+     * Test exact price and quantity match between buy and sell orders.
+     * Principle: a sell(100, 10) followed by a buy(100, 10) should fully match,
+     * leaving both order queues empty.
+     */
     @Test
     void testExactMatchBuySell() throws Exception {
         // 测试完全匹配的买卖订单
@@ -61,6 +76,11 @@ class OrderBookTest {
         assertEquals(0, getQueue("buyOrders").size());
     }
 
+    /**
+     * Test partial matching: incoming buy order absorbs part of an existing sell order.
+     * Principle: sell(100, 10) + buy(101, 5) → sell order is reduced to quantity 5;
+     * the buy order is fully consumed and removed from the book.
+     */
     @Test
     void testPartialMatchBuyOrder() throws Exception {
         // 测试部分匹配的买单
@@ -76,6 +96,11 @@ class OrderBookTest {
         assertEquals(0, getQueue("buyOrders").size());
     }
 
+    /**
+     * Test partial matching: incoming sell order absorbs part of an existing buy order.
+     * Principle: buy(100, 10) + sell(99, 5) → buy order is reduced to quantity 5;
+     * the sell order is fully consumed.
+     */
     @Test
     void testPartialMatchSellOrder() throws Exception {
         // 测试部分匹配的卖单
@@ -91,6 +116,11 @@ class OrderBookTest {
         assertEquals(0, getQueue("sellOrders").size());
     }
 
+    /**
+     * Test large buy order sweeping multiple sell levels.
+     * Principle: a buy(103, 20) sweeps through sell(100, 10) and sell(102, 5),
+     * consuming both and leaving 5 shares as a resting buy order.
+     */
     @Test
     void testSweepMultipleOrders() throws Exception {
         // 测试大额订单扫单
@@ -108,6 +138,11 @@ class OrderBookTest {
         assertEquals(0, buyOrders.peek().price.compareTo(BigDecimal.valueOf(103.00)));
     }
 
+    /**
+     * Test price priority: lower-priced sell orders are matched first.
+     * Principle: sell(102, 5) then sell(100, 10); a buy(101, 8) matches the cheaper
+     * sell(100) first, leaving 2 units of it and the entire sell(102) untouched.
+     */
     @Test
     void testPricePriority() throws Exception {
         // 测试价格优先原则
@@ -130,6 +165,11 @@ class OrderBookTest {
         assertEquals(5, secondSell.quantity);
     }
 
+    /**
+     * Test time priority: earlier orders at the same price are matched first.
+     * Principle: two sell(100) orders with a 1ms gap; a buy(100, 12) consumes the
+     * first (10 units) then partially fills the second (2 units), leaving 3.
+     */
     @Test
     void testTimePriority() throws Exception {
         // 测试时间优先原则
@@ -148,6 +188,11 @@ class OrderBookTest {
         assertEquals(3, sellOrders.peek().quantity);
     }
 
+    /**
+     * Test non-matching orders: buy price too low to match sell.
+     * Principle: sell(100, 10) + buy(99, 5) → no match occurs; both orders remain
+     * in their respective queues.
+     */
     @Test
     void testNoMatchOrders() throws Exception {
         // 测试不匹配的订单
@@ -159,6 +204,11 @@ class OrderBookTest {
         assertEquals(1, getQueue("buyOrders").size());
     }
 
+    /**
+     * Test complex multi-level matching scenario.
+     * Principle: multiple buy orders at different prices and a large incoming sell order
+     * that sweeps through buy levels in price-priority order; verifies remaining queue state.
+     */
     @Test
     void testOrderBookWithMultipleMatches() throws Exception {
         // 测试复杂的多笔匹配场景
@@ -192,6 +242,11 @@ class OrderBookTest {
         assertEquals(3, remainingSell.quantity);
     }
     
+    /**
+     * Test edge case: order with zero quantity should not be added.
+     * Principle: a BUY order with quantity=0 is processed but should not appear in either queue,
+     * verifying the order book rejects or ignores zero-quantity orders.
+     */
     @Test
     void testEdgeCaseZeroQuantity() throws Exception {
         // 测试零数量订单

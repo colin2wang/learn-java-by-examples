@@ -23,6 +23,11 @@ public class MapThreadUnsafeTest {
     private static final int THREAD_COUNT = 300; // Reduced from 3000 for faster test execution
     private static final int TIMEOUT_SECONDS = 30;
 
+    /**
+     * Test HashMap thread-unsafety: concurrent put/get may yield null values.
+     * Principle: 300 threads each put their Thread key with a random value, then immediately
+     * read it back; detects null values that arise from concurrent structural modification.
+     */
     @Test
     void testHashMapThreadSafetyIssue() throws InterruptedException {
         LOG.info("Testing HashMap thread safety issues");
@@ -36,6 +41,11 @@ public class MapThreadUnsafeTest {
         // Note: We don't assert nullValuesDetected > 0 because thread safety issues might not always manifest in every test run
     }
 
+    /**
+     * Test ConcurrentHashMap thread safety: no null values under concurrent access.
+     * Principle: same put-then-get pattern as HashMap test, but ConcurrentHashMap's
+     * segment locking guarantees reads always return the correct non-null value.
+     */
     @Test
     void testConcurrentHashMapSafety() throws InterruptedException {
         LOG.info("Testing ConcurrentHashMap thread safety");
@@ -49,6 +59,11 @@ public class MapThreadUnsafeTest {
         LOG.info("ConcurrentHashMap test completed. Null values detected: {}", nullValuesDetected.get());
     }
 
+    /**
+     * Test Hashtable thread safety: no null values under concurrent access.
+     * Principle: Hashtable synchronizes every method; verifies that put/get
+     * under 300 concurrent threads produces no null reads.
+     */
     @Test
     void testHashtableSafety() throws InterruptedException {
         LOG.info("Testing Hashtable thread safety");

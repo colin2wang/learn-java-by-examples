@@ -61,7 +61,12 @@ public class LockConditionTest {
         }
     }
 
-    // --- JUnit 测试 ---
+    /**
+     * Test producer-consumer pattern using ReentrantLock with Condition variables.
+     * Principle: implements a bounded buffer where producers call notFull.await() when full
+     * and notEmpty.signal() after producing; consumers call notEmpty.await() when empty
+     * and notFull.signal() after consuming. Uses while-loop to prevent spurious wakeups.
+     */
     @Test
     void testProducerConsumerWithLockCondition() {
         final int TOTAL_COUNT = 10;

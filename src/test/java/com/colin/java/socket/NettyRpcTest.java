@@ -34,6 +34,11 @@ public class NettyRpcTest {
         if (rpcServer != null) rpcServer.stop();
     }
 
+    /**
+     * Test normal RPC call: sendRequest("sayHello", "Bing") returns "Hello, Bing".
+     * Principle: the Netty-based RPC client sends a request to the server, which dispatches
+     * to the sayHello method; verifies the response matches the expected greeting string.
+     */
     @Test
     @DisplayName("测试正常RPC调用")
     void testSayHello() throws Exception {
@@ -46,6 +51,11 @@ public class NettyRpcTest {
         assertEquals("Hello, Bing", result);
     }
 
+    /**
+     * Test RPC call to an undefined method returns "Error".
+     * Principle: sends a request for "unknownMethod" which the server doesn't recognize;
+     * the server's default handler returns "Error", verifying graceful error handling.
+     */
     @Test
     @DisplayName("测试未定义的方法")
     void testUnknownMethod() throws Exception {

@@ -21,8 +21,9 @@ public class ConstantPoolOOMTest {
     private static final Logger logger = LoggerFactory.getLogger(ConstantPoolOOMTest.class);
     
     /**
-     * 测试字符串常量池的intern()方法行为
-     * 验证使用intern()的字符串引用相等性
+     * Test String.intern() reference deduplication.
+     * Principle: two new String("test_intern_string") are different objects (== is false),
+     * but after intern() they return the same reference from the constant pool.
      */
     @Test
     public void testStringInternBehavior() {
@@ -46,8 +47,9 @@ public class ConstantPoolOOMTest {
     }
     
     /**
-     * 测试字符串常量池的容量和性能
-     * 生成一定数量的字符串并放入常量池，验证行为
+     * Test string constant pool capacity with 10k interned strings.
+     * Principle: interns 10,000 distinct numeric strings and verifies both the list size
+     * and the unique-reference Set size, confirming intern() correctly deduplicates.
      */
     @Test
     @Timeout(value = 10, unit = TimeUnit.SECONDS)
@@ -76,8 +78,9 @@ public class ConstantPoolOOMTest {
     }
     
     /**
-     * 测试字符串字面量与intern()方法的关系
-     * 验证字符串字面量在编译时就被放入常量池
+     * Test that string literals are placed in the constant pool at compile time.
+     * Principle: two identical string literals share the same reference (== is true);
+     * a new String("...").intern() also returns the same reference as the literal.
      */
     @Test
     public void testStringLiteralsInConstantPool() {
@@ -99,8 +102,10 @@ public class ConstantPoolOOMTest {
     }
     
     /**
-     * 测试常量池内存使用模式
-     * 演示常量池的内存使用特性，避免无限循环导致OOM
+     * Test constant pool memory usage pattern in controlled batches.
+     * Principle: interns 5 batches of 1000 strings, clearing references between batches
+     * to trigger GC; demonstrates that interned strings are retained by the pool
+     * but batch-local references can be collected.
      */
     @Test
     @Timeout(value = 5, unit = TimeUnit.SECONDS)

@@ -17,8 +17,9 @@ public class HashcodeTest {
     private static final Logger logger = LoggerFactory.getLogger(HashcodeTest.class);
     
     /**
-     * 测试字符串hashCode碰撞
-     * 验证"Aa"和"BB"具有相同的hashCode值
+     * Test string hashCode collision: "Aa" and "BB" produce the same hash.
+     * Principle: String.hashCode() uses s[0]*31^(n-1) + ... + s[n-1]; for "Aa" (65*31+97)
+     * and "BB" (66*31+66), both equal 2112, demonstrating that hash collisions are possible.
      */
     @Test
     public void testStringHashCodeCollision() {
@@ -41,8 +42,9 @@ public class HashcodeTest {
     }
     
     /**
-     * 测试对象实例hashCode的唯一性
-     * 验证两个不同的对象实例通常具有不同的hashCode值
+     * Test object instance hashCode uniqueness (identity-based).
+     * Principle: default Object.hashCode() uses identity hash (typically memory address);
+     * two distinct instances of class A should have different hash codes.
      */
     @Test
     public void testObjectHashCodeUniqueness() {
@@ -70,8 +72,9 @@ public class HashcodeTest {
     }
     
     /**
-     * 测试相同内容字符串的hashCode
-     * 验证相同内容的字符串具有相同的hashCode值
+     * Test same-content strings have identical hash codes.
+     * Principle: String.hashCode() is content-based; two literals and a new String("test_string")
+     * all produce the same hashCode, regardless of whether they are the same object reference.
      */
     @Test
     public void testSameStringHashCode() {
@@ -99,8 +102,9 @@ public class HashcodeTest {
     }
     
     /**
-     * 测试hashCode在集合中的应用
-     * 验证hashCode在HashSet中的行为
+     * Test hashCode usage in HashSet: distinct objects with different hashCodes coexist.
+     * Principle: two instances of class A (no equals/hashCode override) have different
+     * identity hash codes; HashSet places them in different buckets, so both are added successfully.
      */
     @Test
     public void testHashCodeInHashSet() {

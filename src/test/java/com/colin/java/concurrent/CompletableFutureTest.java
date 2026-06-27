@@ -24,7 +24,11 @@ public class CompletableFutureTest {
         pool.shutdown();
     }
 
-    /* ---------- 传统写法 ---------- */
+    /**
+     * Test asynchronous computation using traditional Callable + Future pattern.
+     * Principle: submits a Callable<Integer> to a thread pool, blocks on future.get()
+     * with a 1-second timeout, and verifies the sum 1..100 equals 5050.
+     */
     @Test
     @DisplayName("Callable + Future 方式")
     void callableFutureWay() throws Exception {
@@ -38,7 +42,11 @@ public class CompletableFutureTest {
         assertEquals(5050, result);
     }
 
-    /* ---------- 现代写法 ---------- */
+    /**
+     * Test asynchronous computation using CompletableFuture (modern Java 8+ approach).
+     * Principle: wraps the same logic in a Supplier, runs it via supplyAsync() on the pool,
+     * and chains get() with timeout; demonstrates the functional-style alternative to Future.
+     */
     @Test
     @DisplayName("CompletableFuture 方式")
     void completableFutureWay() throws Exception {

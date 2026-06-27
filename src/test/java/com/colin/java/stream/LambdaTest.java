@@ -22,7 +22,9 @@ public class LambdaTest {
 	private static final Logger LOGGER = LoggerFactory.getLogger(LambdaTest.class);
 	
 	/**
-	 * 测试使用匿名内部类实现Comparator接口（Lambda之前的方式）
+	 * Test pre-Lambda sorting with anonymous Comparator inner class.
+	 * Principle: demonstrates the verbose pre-Java-8 approach of implementing Comparator
+	 * via an anonymous class, then verifies the list is sorted in descending order.
 	 */
 	@Test
 	public void testNoLambda() {
@@ -39,7 +41,9 @@ public class LambdaTest {
 	}
 	
 	/**
-	 * 测试使用完整语法的Lambda表达式
+	 * Test full-syntax Lambda expression for sorting.
+	 * Principle: replaces anonymous class with an explicit-type Lambda (String a, String b) -> {},
+	 * demonstrating the basic Lambda syntax introduced in Java 8.
 	 */
 	@Test
 	public void testLambda() {
@@ -53,7 +57,9 @@ public class LambdaTest {
 	}
 	
 	/**
-	 * 测试使用简化语法的Lambda表达式（类型推断和单表达式）
+	 * Test simplified Lambda with type inference and single expression.
+	 * Principle: removes explicit type parameters and curly braces, relying on the compiler
+	 * to infer types from the Collections.sort() context.
 	 */
 	@Test
 	public void testSimplifiedLambda() {
@@ -65,7 +71,9 @@ public class LambdaTest {
 	}
 	
 	/**
-	 * 测试方法引用（Method References）
+	 * Test method reference syntax as Lambda shorthand.
+	 * Principle: uses String::compareToIgnoreCase as a method reference, which is
+	 * syntactic sugar for (a, b) -> a.compareToIgnoreCase(b).
 	 */
 	@Test
 	public void testMethodReference() {
@@ -77,7 +85,9 @@ public class LambdaTest {
 	}
 	
 	/**
-	 * 测试使用Lambda表达式与Stream API过滤集合
+	 * Test Stream.filter() with a Lambda predicate.
+	 * Principle: creates a stream from a list, filters elements where name starts with "m",
+	 * and collects the result to verify only "mike" remains.
 	 */
 	@Test
 	public void testLambdaWithStreamFilter() {
@@ -91,7 +101,9 @@ public class LambdaTest {
 	}
 	
 	/**
-	 * 测试使用Lambda表达式与Stream API转换集合
+	 * Test Stream.map() with a method reference to transform elements.
+	 * Principle: maps each string to its uppercase form via String::toUpperCase,
+	 * demonstrating functional transformation in a stream pipeline.
 	 */
 	@Test
 	public void testLambdaWithStreamMap() {
@@ -105,7 +117,9 @@ public class LambdaTest {
 	}
 	
 	/**
-	 * 测试函数式接口Consumer的Lambda表达式
+	 * Test Consumer functional interface with a Lambda.
+	 * Principle: a Consumer<String> appends each name to a StringBuilder via forEach(),
+	 * demonstrating a side-effect-only Lambda that consumes values without returning.
 	 */
 	@Test
 	public void testConsumerLambda() {
@@ -120,7 +134,9 @@ public class LambdaTest {
 	}
 	
 	/**
-	 * 测试函数式接口Function的Lambda表达式
+	 * Test Function functional interface with a Lambda.
+	 * Principle: creates a Function<String, Integer> that maps a string to its length,
+	 * demonstrating a transformational Lambda that maps input to output.
 	 */
 	@Test
 	public void testFunctionLambda() {
@@ -132,7 +148,9 @@ public class LambdaTest {
 	}
 	
 	/**
-	 * 测试函数式接口Predicate的Lambda表达式
+	 * Test Predicate functional interface with a Lambda.
+	 * Principle: creates a Predicate<String> that tests s.length() > 5, then applies it
+	 * to "Lambda" to verify the boolean result.
 	 */
 	@Test
 	public void testPredicateLambda() {
@@ -144,7 +162,9 @@ public class LambdaTest {
 	}
 	
 	/**
-	 * 测试在集合中使用多个Lambda表达式
+	 * Test chaining multiple Lambda operations in a Stream pipeline.
+	 * Principle: combines filter (length > 4), map (toUpperCase), and sorted() in a single
+	 * stream chain to demonstrate functional composition with Lambdas.
 	 */
 	@Test
 	public void testMultipleLambdasInCollection() {

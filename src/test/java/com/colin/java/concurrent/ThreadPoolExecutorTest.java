@@ -61,7 +61,11 @@ public class ThreadPoolExecutorTest {
     }
 
 
-    /* ---------- 1. 核心线程数是否生效 ---------- */
+    /**
+     * Test that corePoolSize threads are created immediately upon task submission.
+     * Principle: submits exactly corePoolSize tasks and asserts pool.getPoolSize()
+     * equals corePoolSize, proving core threads are eagerly created.
+     */
     @Test
     @DisplayName("corePoolSize 条线程会立即创建")
     void testCorePoolSize() throws InterruptedException {
@@ -81,7 +85,11 @@ public class ThreadPoolExecutorTest {
         }
     }
 
-    /* ---------- 2. 最大线程数是否生效 ---------- */
+    /**
+     * Test that pool expands to maximumPoolSize when the queue is full.
+     * Principle: uses SynchronousQueue (capacity=0 handoff) so every task beyond core
+     * requires a new thread; submits max tasks and asserts pool size reaches maximumPoolSize.
+     */
     @Test
     @DisplayName("队列满后线程数能涨到 maximumPoolSize")
     void testMaximumPoolSize() throws InterruptedException {
@@ -110,7 +118,11 @@ public class ThreadPoolExecutorTest {
         }
     }
 
-    /* ---------- 3. keepAliveTime 是否生效 ---------- */
+    /**
+     * Test that idle threads beyond core are reclaimed after keepAliveTime.
+     * Principle: creates 2 threads (1 core + 1 temp), waits 400ms (> 200ms keepAliveTime),
+     * then asserts pool size shrinks back to corePoolSize.
+     */
     @Test
     @DisplayName("空闲线程超过 keepAliveTime 后被回收")
     void testKeepAliveTime() throws InterruptedException {
@@ -142,7 +154,11 @@ public class ThreadPoolExecutorTest {
         }
     }
 
-    /* ---------- 4. 自定义 ThreadFactory 是否生效 ---------- */
+    /**
+     * Test custom ThreadFactory creates threads with expected name prefix.
+     * Principle: provides a factory that names threads "worker-N"; asserts the executing
+     * thread's name starts with "worker-" to verify the factory is used.
+     */
     @Test
     @DisplayName("threadFactory 被使用，线程名符合预期")
     void testThreadFactory() throws InterruptedException {
@@ -164,7 +180,11 @@ public class ThreadPoolExecutorTest {
         }
     }
 
-    /* ---------- 5. 拒绝策略是否生效 ---------- */
+    /**
+     * Test custom RejectedExecutionHandler fires when queue and threads are full.
+     * Principle: fills 1 core thread + 1 temp thread + 1 queued task = 3 slots; the 4th task
+     * triggers the handler which writes "rejected" to a temp file; asserts the file content.
+     */
     @Test
     @DisplayName("队列+线程全满时 handler 触发")
     void testRejectedExecutionHandler(@TempDir Path tempDir) throws IOException, InterruptedException {

@@ -9,7 +9,12 @@ class CyclicBarrierClassicTest {
 
     private static final int RUNNERS = 10;
 
-    /** 主测试方法 */
+    /**
+     * Test that 10 threads wait at a CyclicBarrier and start racing together.
+     * Principle: each thread has a random preparation time, then calls barrier.await();
+     * all threads are released simultaneously when the barrier party count is reached.
+     * Asserts the max blocking duration is within a reasonable bound.
+     */
     @Test
     @DisplayName("10 线程必须全部就绪才同时开跑")
     void raceStartTogether() throws Exception {
@@ -58,7 +63,11 @@ class CyclicBarrierClassicTest {
                 "Barrier 唤醒耗时过大，可能系统繁忙");
     }
 
-    /** 演示可重用：同一 Barrier 连续用两次 */
+    /**
+     * Test CyclicBarrier reusability across multiple rounds.
+     * Principle: the same barrier is used for 2 consecutive rounds of 3 threads each;
+     * after all parties arrive, the barrier automatically resets, allowing reuse.
+     */
     @Test
     void reusable() throws Exception {
         CyclicBarrier cb = new CyclicBarrier(3, () -> System.out.println("--- 一轮结束 ---"));

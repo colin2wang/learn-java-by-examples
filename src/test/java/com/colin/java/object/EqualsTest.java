@@ -75,8 +75,9 @@ public class EqualsTest {
     }
 
     /**
-     * 测试Integer常量池中的对象相等性
-     * 验证在-128到127范围内的Integer对象使用==比较时返回true
+     * Test Integer constant pool: == returns true for values in [-128, 127].
+     * Principle: autoboxed Integer(3) returns a cached instance; both variables point
+     * to the same object, so == is true and equals() is also true.
      */
     @Test
     public void testIntegerConstantPool() {
@@ -100,8 +101,9 @@ public class EqualsTest {
     }
 
     /**
-     * 测试超出Integer常量池范围的对象相等性
-     * 验证超出-128到127范围的Integer对象使用==比较时返回false
+     * Test Integer outside constant pool: == returns false for values > 127.
+     * Principle: autoboxed Integer(128) creates two distinct objects each time;
+     * == compares references (false), but equals() compares values (true).
      */
     @Test
     public void testIntegerOutsideConstantPool() {
@@ -125,8 +127,9 @@ public class EqualsTest {
     }
 
     /**
-     * 测试Integer.valueOf()方法的行为
-     * 验证valueOf()方法在常量池范围内返回缓存对象
+     * Test Integer.valueOf() caching behavior.
+     * Principle: valueOf(3) returns the same cached object (== is true); valueOf(128)
+     * creates new objects each call (== is false); equals() is true for both cases.
      */
     @Test
     public void testIntegerValueOfBehavior() {
@@ -157,8 +160,9 @@ public class EqualsTest {
     }
 
     /**
-     * 测试new Integer与自动装箱的区别
-     * 验证new Integer始终创建新对象
+     * Test that autoboxing uses the same cache as valueOf().
+     * Principle: Integer autoBox = 3 compiles to Integer.valueOf(3), which returns
+     * a cached instance; verifies that both autoboxed variables share the same reference.
      */
     @Test
     public void testNewIntegerVsAutoboxing() {
@@ -188,8 +192,9 @@ public class EqualsTest {
     }
 
     /**
-     * 测试equals和hashCode方法的一致性
-     * 验证如果两个对象equals返回true，它们的hashCode必须相等
+     * Test equals/hashCode contract: equal objects must have equal hash codes.
+     * Principle: two Person objects with the same name and age are equals()-equal;
+     * verifies that Objects.hash() produces the same hashCode for both.
      */
     @Test
     public void testEqualsAndHashCodeConsistency() {
@@ -213,8 +218,9 @@ public class EqualsTest {
     }
 
     /**
-     * 测试只重写equals方法而不重写hashCode方法的问题
-     * 验证这会导致在基于hash的集合中出现预期外的行为
+     * Test the broken contract: equals() overridden but hashCode() not.
+     * Principle: PersonNoHashCode overrides equals() but inherits Object.hashCode() (identity-based);
+     * two equal objects get different hash codes, causing HashSet to treat them as distinct entries.
      */
     @Test
     public void testOnlyEqualsWithoutHashCode() {
@@ -250,8 +256,9 @@ public class EqualsTest {
     }
 
     /**
-     * 测试正确实现equals和hashCode方法在HashSet中的行为
-     * 验证相同内容的对象在HashSet中只会存在一个
+     * Test correct equals/hashCode in HashSet: duplicates are rejected.
+     * Principle: Person correctly implements both methods; adding two equal Person
+     * objects to a HashSet results in size=1 because HashSet uses hashCode+equals for dedup.
      */
     @Test
     public void testEqualsHashCodeInHashSet() {
@@ -282,8 +289,9 @@ public class EqualsTest {
     }
 
     /**
-     * 测试正确实现equals和hashCode方法在HashMap中的行为
-     * 验证相同内容的键在HashMap中只会存在一个
+     * Test correct equals/hashCode in HashMap: duplicate keys overwrite.
+     * Principle: two equal Person keys in a HashMap result in size=1; the second put()
+     * overwrites the first value, and either key can retrieve the updated value.
      */
     @Test
     public void testEqualsHashCodeInHashMap() {
@@ -313,8 +321,9 @@ public class EqualsTest {
     }
 
     /**
-     * 测试String类的equals和hashCode方法
-     * 验证String类正确实现了这两个方法
+     * Test String class equals() and hashCode() implementation.
+     * Principle: two new String("hello") objects have equals()=true and identical hashCodes,
+     * but == is false (different instances); verifies String's contract compliance.
      */
     @Test
     public void testStringEqualsHashCode() {
